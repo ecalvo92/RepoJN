@@ -16,7 +16,12 @@ namespace JN_ProyectoWeb.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Registro()
+        {
+            return View();
+        }
+
+        public IActionResult Principal()
         {
             return View();
         }
