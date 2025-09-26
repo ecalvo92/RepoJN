@@ -14,4 +14,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="JN_ProyectoWeb">
+      <HintPath>JN_ProyectoWeb.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
