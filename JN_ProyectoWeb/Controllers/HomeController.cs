@@ -4,13 +4,6 @@ namespace JN_ProyectoWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();
@@ -21,10 +14,14 @@ namespace JN_ProyectoWeb.Controllers
             return View();
         }
 
-        public IActionResult Principal()
+        public IActionResult RecuperarAcceso()
         {
             return View();
         }
 
+        public IActionResult Principal()
+        {
+            return View();
+        }
     }
 }
