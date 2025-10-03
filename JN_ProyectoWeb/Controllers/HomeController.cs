@@ -5,6 +5,14 @@ namespace JN_ProyectoWeb.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHttpClientFactory _http;
+        private readonly IConfiguration _configuration;
+        public HomeController(IHttpClientFactory http, IConfiguration configuration)
+        {
+            _http = http;
+            _configuration = configuration;
+        }
+
         #region Actions de Iniciar Sesión
 
         [HttpGet]
@@ -34,7 +42,16 @@ namespace JN_ProyectoWeb.Controllers
         [HttpPost]
         public IActionResult Registro(UsuarioModel usuario)
         {
-            //ToDo: registrar la información del usuario en la BD
+            using (var context = _http.CreateClient())
+            {
+                var urlApi = _configuration["Valores:UrlAPI"] + "Home/Registro";
+                var respuesta = context.PostAsJsonAsync(urlApi, usuario).Result;
+
+                if (respuesta.IsSuccessStatusCode)
+                { 
+                
+                }
+            }
 
             return View();
         }
