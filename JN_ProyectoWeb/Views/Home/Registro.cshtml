@@ -15,15 +15,15 @@
                     </a>
                 </div>
 
-                <form class="mb-3" asp-action="Registro" asp-controller="Home">
+                <form id="FormRegistro" class="mb-3" asp-action="Registro" asp-controller="Home">
                     <div class="mb-3">
                         <label for="username" class="form-label">Identificación</label>
-                        <input type="text" class="form-control" asp-for="Identificacion" />
+                        <input type="text" class="form-control" asp-for="Identificacion" onkeyup="ConsultarNombre();" />
                     </div>
 
                     <div class="mb-3">
                         <label for="username" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" asp-for="Nombre" />
+                        <input type="text" class="form-control" asp-for="Nombre" readonly="readonly" />
                     </div>
 
                     <div class="mb-3">
@@ -33,10 +33,7 @@
 
                     <div class="mb-3 form-password-toggle">
                         <label class="form-label" for="password">Contraseña</label>
-                        <div class="input-group input-group-merge">
-                            <input type="password" class="form-control" asp-for="Contrasenna" />
-                            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                        </div>
+                        <input type="password" class="form-control" asp-for="Contrasenna" />
                     </div>
                     <button class="btn btn-primary d-grid w-100" type="submit">Procesar</button>
                 </form>
@@ -51,3 +48,5 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/Registro.js" asp-append-version="true"></script>
