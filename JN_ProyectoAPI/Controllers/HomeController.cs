@@ -28,9 +28,8 @@ namespace JN_ProyectoAPI.Controllers
                 parametros.Add("@Contrasenna", usuario.Contrasenna);
 
                 var resultado = context.Execute("Registro", parametros);
+                return Ok(resultado);
             }
-
-            return Ok();
         }
 
     }

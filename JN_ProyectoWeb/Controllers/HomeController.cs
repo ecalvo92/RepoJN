@@ -48,12 +48,16 @@ namespace JN_ProyectoWeb.Controllers
                 var respuesta = context.PostAsJsonAsync(urlApi, usuario).Result;
 
                 if (respuesta.IsSuccessStatusCode)
-                { 
-                
-                }
-            }
+                {
+                    var datosApi = respuesta.Content.ReadFromJsonAsync<int>().Result;
 
-            return View();
+                    if (datosApi > 0)
+                        return RedirectToAction("Index", "Home");
+                }
+
+                ViewBag.Mensaje = "No se ha registrado la información";
+                return View();
+            }
         }
 
         #endregion
