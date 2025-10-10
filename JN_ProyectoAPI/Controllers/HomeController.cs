@@ -17,7 +17,7 @@ namespace JN_ProyectoAPI.Controllers
 
         [HttpPost]
         [Route("Registro")]
-        public IActionResult Registro(UsuarioModel usuario)
+        public IActionResult Registro(RegistroUsuarioRequestModel usuario)
         {
             using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
             {
@@ -29,6 +29,25 @@ namespace JN_ProyectoAPI.Controllers
 
                 var resultado = context.Execute("Registro", parametros);
                 return Ok(resultado);
+            }
+        }
+
+        [HttpPost]
+        [Route("ValidarSesion")]
+        public IActionResult ValidarSesion(ValidarSesionRequestModel usuario)
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@CorreoElectronico", usuario.CorreoElectronico);
+                parametros.Add("@Contrasenna", usuario.Contrasenna);
+
+                var resultado = context.QueryFirstOrDefault<ValidarSesionResponseModel>("ValidarSesion", parametros);
+
+                if (resultado != null)
+                    return Ok(resultado);
+
+                return NotFound();
             }
         }
 
