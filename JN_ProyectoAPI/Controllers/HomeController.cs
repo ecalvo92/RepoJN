@@ -2,6 +2,7 @@
 using JN_ProyectoAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.ComponentModel.DataAnnotations;
 
 namespace JN_ProyectoAPI.Controllers
 {
@@ -32,6 +33,7 @@ namespace JN_ProyectoAPI.Controllers
             }
         }
 
+
         [HttpPost]
         [Route("ValidarSesion")]
         public IActionResult ValidarSesion(ValidarSesionRequestModel usuario)
@@ -42,7 +44,7 @@ namespace JN_ProyectoAPI.Controllers
                 parametros.Add("@CorreoElectronico", usuario.CorreoElectronico);
                 parametros.Add("@Contrasenna", usuario.Contrasenna);
 
-                var resultado = context.QueryFirstOrDefault<ValidarSesionResponseModel>("ValidarSesion", parametros);
+                var resultado = context.QueryFirstOrDefault<DatosUsuarioResponseModel>("ValidarSesion", parametros);
 
                 if (resultado != null)
                     return Ok(resultado);
@@ -51,5 +53,26 @@ namespace JN_ProyectoAPI.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("ValidarUsuario")]
+        public IActionResult ValidarUsuario([Required]string CorreoElectronico)
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@CorreoElectronico", CorreoElectronico);
+
+                var resultado = context.QueryFirstOrDefault<DatosUsuarioResponseModel>("ValidarUsuario", parametros);
+
+                if (resultado != null)
+                { 
+                    //Enviarle un correo al usuario con una contraseña temporal   
+                    return Ok(resultado);
+                }
+
+                return NotFound();
+            }
+        }
     }
 }

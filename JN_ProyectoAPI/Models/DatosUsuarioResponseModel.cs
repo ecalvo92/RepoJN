@@ -1,6 +1,6 @@
 ﻿namespace JN_ProyectoAPI.Models
 {
-    public class ValidarSesionResponseModel
+    public class DatosUsuarioResponseModel
     {
         public int ConsecutivoUsuario { get; set; }
         public string Identificacion { get; set; } = string.Empty;
