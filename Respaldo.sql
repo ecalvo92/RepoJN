@@ -79,3 +79,43 @@ BEGIN
 
 END
 GO
+
+CREATE PROCEDURE [dbo].[ValidarSesion]
+	@CorreoElectronico VARCHAR(100),
+    @Contrasenna VARCHAR(10)
+AS
+BEGIN
+
+    SELECT  ConsecutivoUsuario,
+            Identificacion,
+            Nombre,
+            CorreoElectronico,
+            Contrasenna,
+            Estado,
+            ConsecutivoPerfil
+      FROM  dbo.tbUsuario
+      WHERE CorreoElectronico = @CorreoElectronico
+        AND Contrasenna = @Contrasenna
+        AND Estado = 1
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ValidarUsuario]
+	@CorreoElectronico VARCHAR(100)
+AS
+BEGIN
+
+    SELECT  ConsecutivoUsuario,
+            Identificacion,
+            Nombre,
+            CorreoElectronico,
+            Contrasenna,
+            Estado,
+            ConsecutivoPerfil
+      FROM  dbo.tbUsuario
+      WHERE CorreoElectronico = @CorreoElectronico
+        AND Estado = 1
+
+END
+GO
