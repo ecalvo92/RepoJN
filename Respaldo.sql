@@ -7,12 +7,38 @@ GO
 USE [BD_JN]
 GO
 
+CREATE TABLE [dbo].[tbError](
+	[ConsecutivoError] [int] IDENTITY(1,1) NOT NULL,
+	[ConsecutivoUsuario] [int] NOT NULL,
+	[Mensaje] [varchar](max) NOT NULL,
+	[Origen] [varchar](50) NOT NULL,
+	[FechaHora] [datetime] NOT NULL,
+ CONSTRAINT [PK_tbError] PRIMARY KEY CLUSTERED 
+(
+	[ConsecutivoError] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[tbPerfil](
 	[ConsecutivoPerfil] [int] IDENTITY(1,1) NOT NULL,
 	[Nombre] [varchar](100) NOT NULL,
  CONSTRAINT [PK_tbPerfil] PRIMARY KEY CLUSTERED 
 (
 	[ConsecutivoPerfil] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[tbProducto](
+	[ConsecutivoProducto] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](100) NOT NULL,
+	[Precio] [decimal](10, 2) NOT NULL,
+	[Estado] [bit] NOT NULL,
+	[Imagen] [varchar](255) NOT NULL,
+ CONSTRAINT [PK_tbProducto] PRIMARY KEY CLUSTERED 
+(
+	[ConsecutivoProducto] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -41,11 +67,18 @@ GO
 SET IDENTITY_INSERT [dbo].[tbPerfil] OFF
 GO
 
+SET IDENTITY_INSERT [dbo].[tbProducto] ON 
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Precio], [Estado], [Imagen]) VALUES (1, N'Perros Calientes', CAST(2500.00 AS Decimal(10, 2)), 1, N'-----')
+GO
+SET IDENTITY_INSERT [dbo].[tbProducto] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[tbUsuario] ON 
 GO
 INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil]) VALUES (1, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'90415', 1, 2)
 GO
-INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil]) VALUES (2, N'305550650', N'JOHNNY FABIAN CASTILLO FALLAS', N'jcastillo50650@ufide.ac.cr', N'50650', 1, 2)
+INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil]) VALUES (2, N'305550650', N'JOHNNY FABIAN CASTILLO FALLAS', N'jcastillo50650@ufide.ac.cr', N'HEIW3M9V', 1, 2)
 GO
 SET IDENTITY_INSERT [dbo].[tbUsuario] OFF
 GO
@@ -54,6 +87,47 @@ ALTER TABLE [dbo].[tbUsuario]  WITH CHECK ADD  CONSTRAINT [FK_tbUsuario_tbPerfil
 REFERENCES [dbo].[tbPerfil] ([ConsecutivoPerfil])
 GO
 ALTER TABLE [dbo].[tbUsuario] CHECK CONSTRAINT [FK_tbUsuario_tbPerfil]
+GO
+
+CREATE PROCEDURE [dbo].[ActualizarContrasenna]
+	@ConsecutivoUsuario INT,
+    @Contrasenna VARCHAR(10)
+AS
+BEGIN
+
+   UPDATE   dbo.tbUsuario
+   SET      Contrasenna = @Contrasenna
+   WHERE	ConsecutivoUsuario = @ConsecutivoUsuario
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarProductos]
+	
+AS
+BEGIN
+
+      SELECT  ConsecutivoProducto,
+              Nombre,
+              Precio,
+              Estado,
+              Imagen
+      FROM  dbo.tbProducto
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[RegistrarError]
+	@ConsecutivoUsuario INT,
+    @MensajeError VARCHAR(MAX),
+    @OrigenError VARCHAR(50)
+AS
+BEGIN
+
+    INSERT INTO dbo.tbError (ConsecutivoUsuario,Mensaje,Origen,FechaHora)
+    VALUES (@ConsecutivoUsuario, @MensajeError, @OrigenError, GETDATE())
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[Registro]
@@ -88,12 +162,14 @@ BEGIN
 
     SELECT  ConsecutivoUsuario,
             Identificacion,
-            Nombre,
+            U.Nombre,
             CorreoElectronico,
             Contrasenna,
             Estado,
-            ConsecutivoPerfil
-      FROM  dbo.tbUsuario
+            U.ConsecutivoPerfil,
+            P.Nombre 'NombrePerfil'
+      FROM  dbo.tbUsuario U
+      INNER JOIN dbo.tbPerfil P ON U.ConsecutivoPerfil = P.ConsecutivoPerfil
       WHERE CorreoElectronico = @CorreoElectronico
         AND Contrasenna = @Contrasenna
         AND Estado = 1
