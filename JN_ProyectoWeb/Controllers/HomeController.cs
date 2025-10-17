@@ -1,4 +1,5 @@
 using JN_ProyectoWeb.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JN_ProyectoWeb.Controllers
@@ -34,7 +35,11 @@ namespace JN_ProyectoWeb.Controllers
                     var datosApi = respuesta.Content.ReadFromJsonAsync<UsuarioModel>().Result;
 
                     if (datosApi != null)
+                    {
+                        HttpContext.Session.SetString("NombreUsuario", datosApi.Nombre);
+                        HttpContext.Session.SetString("NombrePerfil", datosApi.NombrePerfil);
                         return RedirectToAction("Principal", "Home");
+                    }
                 }
 
                 ViewBag.Mensaje = "No se ha validado la información";
