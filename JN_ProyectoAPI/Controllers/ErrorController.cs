@@ -30,7 +30,7 @@ namespace JN_ProyectoAPI.Controllers
                 parametros.Add("@MensajeError", exception?.Error.Message);
                 parametros.Add("@OrigenError", exception?.Path);
 
-                //context.Execute("RegistrarError", parametros);
+                context.Execute("RegistrarError", parametros);
             }
 
             return StatusCode(500, "Se presentó una excepción en nuestro servicio");

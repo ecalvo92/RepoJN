@@ -3,6 +3,11 @@ using JN_ProyectoAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Net.Mail;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace JN_ProyectoAPI.Controllers
 {
@@ -62,17 +67,72 @@ namespace JN_ProyectoAPI.Controllers
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("@CorreoElectronico", CorreoElectronico);
-
                 var resultado = context.QueryFirstOrDefault<DatosUsuarioResponseModel>("ValidarUsuario", parametros);
 
                 if (resultado != null)
-                { 
-                    //Enviarle un correo al usuario con una contraseña temporal   
-                    return Ok(resultado);
+                {
+                    //Actualizar Contraseña
+                    var ContrasennaGenerada = GenerarContrasenna();
+
+                    var parametrosActualizar = new DynamicParameters();
+                    parametrosActualizar.Add("@ConsecutivoUsuario", resultado.ConsecutivoUsuario);
+                    parametrosActualizar.Add("@Contrasenna", ContrasennaGenerada);
+                    var resultadoActualizar = context.Execute("ActualizarContrasenna", parametrosActualizar);
+
+                    if (resultadoActualizar > 0)
+                    {
+                        //Enviar Correo
+                        EnviarCorreo("Recuperar Acceso", ContrasennaGenerada, resultado.CorreoElectronico);
+                        return Ok(resultado);
+                    }                    
                 }
 
                 return NotFound();
             }
+        }
+
+        private string GenerarContrasenna()
+        {
+            int longitud = 8;
+            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder resultado = new();
+
+            using var rng = RandomNumberGenerator.Create();
+            byte[] buffer = new byte[1];
+
+            while (resultado.Length < longitud)
+            {
+                rng.GetBytes(buffer);
+                int valor = buffer[0] % caracteres.Length;
+                resultado.Append(caracteres[valor]);
+            }
+
+            return resultado.ToString();
+        }
+
+        private void EnviarCorreo(string subject, string body, string destinatario)
+        {
+            var correoSMTP = _configuration["Valores:CorreoSMTP"]!;
+            var contrasennaSMTP = _configuration["Valores:ContrasennaSMTP"]!;
+
+            var mensaje = new MailMessage
+            {
+                From = new MailAddress(correoSMTP),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
+
+            mensaje.To.Add(destinatario);
+
+            using var smtp = new SmtpClient("smtp.office365.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(correoSMTP, contrasennaSMTP),
+                EnableSsl = true
+            };
+
+            smtp.Send(mensaje);
         }
     }
 }
