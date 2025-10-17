@@ -123,6 +123,9 @@ namespace JN_ProyectoAPI.Controllers
             var correoSMTP = _configuration["Valores:CorreoSMTP"]!;
             var contrasennaSMTP = _configuration["Valores:ContrasennaSMTP"]!;
 
+            if (string.IsNullOrEmpty(contrasennaSMTP))
+                return;
+
             var mensaje = new MailMessage
             {
                 From = new MailAddress(correoSMTP),
