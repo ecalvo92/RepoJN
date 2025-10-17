@@ -16,9 +16,11 @@ namespace JN_ProyectoAPI.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public HomeController(IConfiguration configuration)
+        private readonly IHostEnvironment _environment;
+        public HomeController(IConfiguration configuration, IHostEnvironment environment)
         {
             _configuration = configuration;
+            _environment = environment;
         }
 
         [HttpPost]
@@ -82,7 +84,13 @@ namespace JN_ProyectoAPI.Controllers
                     if (resultadoActualizar > 0)
                     {
                         //Enviar Correo
-                        EnviarCorreo("Recuperar Acceso", ContrasennaGenerada, resultado.CorreoElectronico);
+                        var ruta = Path.Combine(_environment.ContentRootPath, "PlantillaCorreo.html");
+                        var html = System.IO.File.ReadAllText(ruta, UTF8Encoding.UTF8);
+
+                        html = html.Replace("{{Nombre}}", resultado.Nombre);
+                        html = html.Replace("{{Contrasenna}}", ContrasennaGenerada);
+
+                        EnviarCorreo("Recuperar Acceso", html, resultado.CorreoElectronico);
                         return Ok(resultado);
                     }                    
                 }
