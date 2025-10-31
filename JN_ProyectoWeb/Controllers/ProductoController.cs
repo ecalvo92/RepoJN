@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JN_ProyectoWeb.Controllers
 {
+    [Seguridad]
     public class ProductoController : Controller
     {
         private readonly IHttpClientFactory _http;

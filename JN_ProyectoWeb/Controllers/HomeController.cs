@@ -36,6 +36,7 @@ namespace JN_ProyectoWeb.Controllers
 
                     if (datosApi != null)
                     {
+                        HttpContext.Session.SetInt32("ConsecutivoUsuario", datosApi.ConsecutivoUsuario);
                         HttpContext.Session.SetString("NombreUsuario", datosApi.Nombre);
                         HttpContext.Session.SetString("NombrePerfil", datosApi.NombrePerfil);
                         return RedirectToAction("Principal", "Home");
@@ -111,10 +112,19 @@ namespace JN_ProyectoWeb.Controllers
 
         #endregion
 
+        [Seguridad]
         [HttpGet]
         public IActionResult Principal()
         {
             return View();
+        }
+
+        [Seguridad]
+        [HttpGet]
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
