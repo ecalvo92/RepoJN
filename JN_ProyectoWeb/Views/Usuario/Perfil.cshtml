@@ -1,0 +1,55 @@
+﻿@model UsuarioModel
+
+@{
+    Layout = "_LayoutInterno";
+}
+
+<div class="card mb-4 mt-4">
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-primary text-center">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+    <h4 class="card-header text-center">Perfil</h4>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+
+                <form id="" class="mb-3" asp-action="" asp-controller="">
+
+                    <div class="mb-3">
+                        <label class="form-label">Identificación</label>
+                        <input type="text" class="form-control" asp-for="Identificacion" onkeyup="ConsultarNombre();" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" asp-for="Nombre" readonly="readonly" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" asp-for="CorreoElectronico" />
+                    </div>
+
+                    <div class="mb-3 form-password-toggle">
+                        <label class="form-label">Perfil</label>
+                        <input type="text" class="form-control" asp-for="NombrePerfil" readonly="readonly" />
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary d-grid w-25" type="submit">Procesar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
