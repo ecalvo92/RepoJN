@@ -78,7 +78,7 @@ SET IDENTITY_INSERT [dbo].[tbUsuario] ON
 GO
 INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil]) VALUES (1, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'90415', 1, 2)
 GO
-INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil]) VALUES (2, N'305550650', N'JOHNNY FABIAN CASTILLO FALLAS', N'jcastillo50650@ufide.ac.cr', N'HEIW3M9V', 1, 2)
+INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil]) VALUES (2, N'117710474', N'BRAYTON MACCOY ARTOLA', N'bmaccoy0474@ufide.ac.cr', N'LDA', 1, 2)
 GO
 SET IDENTITY_INSERT [dbo].[tbUsuario] OFF
 GO
@@ -102,6 +102,23 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[ActualizarPerfil]
+	@ConsecutivoUsuario INT,
+    @Identificacion VARCHAR(15),
+	@Nombre VARCHAR(255),
+	@CorreoElectronico VARCHAR(100)
+AS
+BEGIN
+
+   UPDATE   dbo.tbUsuario
+   SET      Identificacion = @Identificacion,
+			Nombre = @Nombre,
+			CorreoElectronico = @CorreoElectronico
+   WHERE	ConsecutivoUsuario = @ConsecutivoUsuario
+
+END
+GO
+
 CREATE PROCEDURE [dbo].[ConsultarProductos]
 	
 AS
@@ -113,6 +130,26 @@ BEGIN
               Estado,
               Imagen
       FROM  dbo.tbProducto
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarUsuario]
+	@ConsecutivoUsuario INT
+AS
+BEGIN
+
+    SELECT  ConsecutivoUsuario,
+            Identificacion,
+            U.Nombre,
+            CorreoElectronico,
+            Contrasenna,
+            Estado,
+            U.ConsecutivoPerfil,
+            P.Nombre 'NombrePerfil'
+      FROM  dbo.tbUsuario U
+      INNER JOIN dbo.tbPerfil P ON U.ConsecutivoPerfil = P.ConsecutivoPerfil
+      WHERE ConsecutivoUsuario = @ConsecutivoUsuario
 
 END
 GO
