@@ -1,6 +1,6 @@
 ﻿using JN_ProyectoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
+using System.Net.Http.Headers;
 
 namespace JN_ProyectoWeb.Controllers
 {
@@ -21,6 +21,8 @@ namespace JN_ProyectoWeb.Controllers
             using (var context = _http.CreateClient())
             {
                 var urlApi = _configuration["Valores:UrlAPI"] + "Producto/ConsultarProductos";
+
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
                 var respuesta = context.GetAsync(urlApi).Result;
 
                 if (respuesta.IsSuccessStatusCode)
@@ -48,6 +50,7 @@ namespace JN_ProyectoWeb.Controllers
             {
                 producto.Imagen = "/imagenes/";
                 var urlApi = _configuration["Valores:UrlAPI"] + "Producto/AgregarProductos";
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
                 var respuesta = context.PostAsJsonAsync(urlApi, producto).Result;
 
                 if (respuesta.IsSuccessStatusCode)
@@ -78,9 +81,6 @@ namespace JN_ProyectoWeb.Controllers
                 return View();
             }
         }
-
-        
-
 
         [HttpGet]
         public IActionResult ActualizarProductos()

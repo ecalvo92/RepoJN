@@ -1,5 +1,4 @@
 using JN_ProyectoWeb.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JN_ProyectoWeb.Controllers
@@ -39,6 +38,7 @@ namespace JN_ProyectoWeb.Controllers
                         HttpContext.Session.SetInt32("ConsecutivoUsuario", datosApi.ConsecutivoUsuario);
                         HttpContext.Session.SetString("NombreUsuario", datosApi.Nombre);
                         HttpContext.Session.SetString("NombrePerfil", datosApi.NombrePerfil);
+                        HttpContext.Session.SetString("Token", datosApi.Token);
                         return RedirectToAction("Principal", "Home");
                     }
                 }

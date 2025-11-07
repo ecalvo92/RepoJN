@@ -14,7 +14,7 @@ namespace JN_ProyectoWeb.Models
             else
             {
                 base.OnActionExecuting(context);
-            }           
+            }
         }
     }
 }

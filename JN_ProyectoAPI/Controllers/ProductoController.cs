@@ -1,11 +1,12 @@
 ﻿using Dapper;
 using JN_ProyectoAPI.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
 namespace JN_ProyectoAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductoController : ControllerBase
@@ -15,6 +16,7 @@ namespace JN_ProyectoAPI.Controllers
         {
             _configuration = configuration;
         }
+
 
         [HttpGet]
         [Route("ConsultarProductos")]
@@ -28,6 +30,7 @@ namespace JN_ProyectoAPI.Controllers
                 return Ok(resultado);
             }
         }
+
 
         [HttpPost]
         [Route("AgregarProductos")]

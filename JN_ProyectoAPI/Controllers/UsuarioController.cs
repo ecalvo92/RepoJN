@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using JN_ProyectoAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
 namespace JN_ProyectoAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
@@ -14,6 +16,7 @@ namespace JN_ProyectoAPI.Controllers
         {
             _configuration = configuration;
         }
+
 
         [HttpGet]
         [Route("ConsultarUsuario")]
@@ -28,6 +31,7 @@ namespace JN_ProyectoAPI.Controllers
                 return Ok(resultado);
             }
         }
+
 
         [HttpPut]
         [Route("ActualizarPerfil")]
@@ -46,6 +50,7 @@ namespace JN_ProyectoAPI.Controllers
             }
         }
 
+
         [HttpPut]
         [Route("ActualizarSeguridad")]
         public IActionResult ActualizarSeguridad(SeguridadRequestModel usuario)
@@ -59,7 +64,7 @@ namespace JN_ProyectoAPI.Controllers
                 var resultado = context.Execute("ActualizarContrasenna", parametros);
                 return Ok(resultado);
             }
-        }       
+        }
 
     }
 }

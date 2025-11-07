@@ -1,7 +1,6 @@
 ﻿using JN_ProyectoWeb.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
+using System.Net.Http.Headers;
 
 namespace JN_ProyectoWeb.Controllers
 {
@@ -25,6 +24,7 @@ namespace JN_ProyectoWeb.Controllers
             {
                 var consecutivo = HttpContext.Session.GetInt32("ConsecutivoUsuario");
                 var urlApi = _configuration["Valores:UrlAPI"] + "Usuario/ConsultarUsuario?ConsecutivoUsuario=" + consecutivo;
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
                 var respuesta = context.GetAsync(urlApi).Result;
 
                 if (respuesta.IsSuccessStatusCode)
@@ -47,6 +47,7 @@ namespace JN_ProyectoWeb.Controllers
             using (var context = _http.CreateClient())
             {
                 var urlApi = _configuration["Valores:UrlAPI"] + "Usuario/ActualizarPerfil";
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
                 var respuesta = context.PutAsJsonAsync(urlApi, usuario).Result;
 
                 if (respuesta.IsSuccessStatusCode)
@@ -83,6 +84,7 @@ namespace JN_ProyectoWeb.Controllers
             using (var context = _http.CreateClient())
             {
                 var urlApi = _configuration["Valores:UrlAPI"] + "Usuario/ActualizarSeguridad";
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
                 var respuesta = context.PutAsJsonAsync(urlApi, usuario).Result;
 
                 if (respuesta.IsSuccessStatusCode)
