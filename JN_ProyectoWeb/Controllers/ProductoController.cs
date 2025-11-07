@@ -1,5 +1,6 @@
 ﻿using JN_ProyectoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JN_ProyectoWeb.Controllers
 {
@@ -41,9 +42,41 @@ namespace JN_ProyectoWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult AgregarProductos(ProductoModel producto)
+        public IActionResult AgregarProductos(ProductoModel producto, IFormFile Imagen)
         {
-            return View();
+            using (var context = _http.CreateClient())
+            {
+                producto.Imagen = "/imagenes/";
+                var urlApi = _configuration["Valores:UrlAPI"] + "Producto/AgregarProductos";
+                var respuesta = context.PostAsJsonAsync(urlApi, producto).Result;
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var datosApi = respuesta.Content.ReadFromJsonAsync<int>().Result;
+
+                    if (datosApi > 0)
+                    {
+                        //save de la imagen
+                        string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "imagenes");
+
+                        if (!Directory.Exists(carpetaDestino))
+                            Directory.CreateDirectory(carpetaDestino);
+
+                        string nombreArchivo = datosApi + ".png";
+                        string rutaCompleta = Path.Combine(carpetaDestino, nombreArchivo);
+
+                        using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+                        {
+                            Imagen.CopyTo(stream);
+                        }
+
+                        return RedirectToAction("ConsultarProductos", "Producto");
+                    }
+                }
+
+                ViewBag.Mensaje = "No se ha registrado la información";
+                return View();
+            }
         }
 
         

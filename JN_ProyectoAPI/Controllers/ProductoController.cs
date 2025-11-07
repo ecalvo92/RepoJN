@@ -28,6 +28,23 @@ namespace JN_ProyectoAPI.Controllers
                 return Ok(resultado);
             }
         }
-        
+
+        [HttpPost]
+        [Route("AgregarProductos")]
+        public IActionResult AgregarProductos(RegistroProductoRequestModel producto)
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@Nombre", producto.Nombre);
+                parametros.Add("@Descripcion", producto.Descripcion);
+                parametros.Add("@Precio", producto.Precio);
+                parametros.Add("@Imagen", producto.Imagen);
+
+                var resultado = context.QueryFirstOrDefault<DatosProductoResponseModel>("RegistroProducto", parametros);
+                return Ok(resultado!.ConsecutivoProducto);
+            }
+        }
+
     }
 }
