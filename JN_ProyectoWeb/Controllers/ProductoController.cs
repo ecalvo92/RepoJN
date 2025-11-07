@@ -32,5 +32,28 @@ namespace JN_ProyectoWeb.Controllers
                 return View(new List<ProductoModel>());
             }
         }
+
+
+        [HttpGet]
+        public IActionResult AgregarProductos()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AgregarProductos(ProductoModel producto)
+        {
+            return View();
+        }
+
+        
+
+
+        [HttpGet]
+        public IActionResult ActualizarProductos()
+        {
+            return View();
+        }
+
     }
 }
