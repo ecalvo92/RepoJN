@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $("#FormAgregarProducto").validate({
+    $("#FormActualizarProducto").validate({
         rules: {
             Nombre: {
                 required: true
@@ -11,7 +11,6 @@
                 required: true
             },
             Imagen: {
-                required: true,
                 extension: "png",
                 filesize: 2 * 1024 * 1024
             },
@@ -27,7 +26,6 @@
                 required: "* Requerido"
             },
             Imagen: {
-                required: "* Requerido",
                 extension: "* Solo se permiten archivos PNG",
                 filesize: "* El archivo no debe superar los 2 MB"
             }

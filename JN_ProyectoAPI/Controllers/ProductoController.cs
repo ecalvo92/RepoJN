@@ -20,11 +20,12 @@ namespace JN_ProyectoAPI.Controllers
 
         [HttpGet]
         [Route("ConsultarProductos")]
-        public IActionResult ConsultarProductos()
+        public IActionResult ConsultarProductos(int ConsecutivoProducto)
         {
             using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
             {
                 var parametros = new DynamicParameters();
+                parametros.Add("@ConsecutivoProducto", ConsecutivoProducto);
 
                 var resultado = context.Query<DatosProductoResponseModel>("ConsultarProductos", parametros);
                 return Ok(resultado);

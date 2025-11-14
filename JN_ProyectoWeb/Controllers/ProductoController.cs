@@ -18,22 +18,8 @@ namespace JN_ProyectoWeb.Controllers
         [HttpGet]
         public IActionResult ConsultarProductos()
         {
-            using (var context = _http.CreateClient())
-            {
-                var urlApi = _configuration["Valores:UrlAPI"] + "Producto/ConsultarProductos";
-
-                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-                var respuesta = context.GetAsync(urlApi).Result;
-
-                if (respuesta.IsSuccessStatusCode)
-                {
-                    var datosApi = respuesta.Content.ReadFromJsonAsync<List<ProductoModel>>().Result;
-                    return View(datosApi);
-                }
-
-                ViewBag.Mensaje = "No hay productos registrados";
-                return View(new List<ProductoModel>());
-            }
+            var respuesta = ConsultarDatosProductos(0);
+            return View(respuesta);
         }
 
 
@@ -82,10 +68,38 @@ namespace JN_ProyectoWeb.Controllers
             }
         }
 
+
         [HttpGet]
-        public IActionResult ActualizarProductos()
+        public IActionResult ActualizarProductos(int id)
+        {
+            var respuesta = ConsultarDatosProductos(id);
+            return View(respuesta?.FirstOrDefault());
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarProductos(ProductoModel producto, IFormFile Imagen)
         {
             return View();
+        }
+
+        private List<ProductoModel>? ConsultarDatosProductos(int id)
+        {
+            using (var context = _http.CreateClient())
+            {
+                var urlApi = _configuration["Valores:UrlAPI"] + "Producto/ConsultarProductos?ConsecutivoProducto=" + id;
+
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                var respuesta = context.GetAsync(urlApi).Result;
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var datosApi = respuesta.Content.ReadFromJsonAsync<List<ProductoModel>>().Result;
+                    return datosApi;
+                }
+
+                ViewBag.Mensaje = "No hay productos registrados";
+                return new List<ProductoModel>();
+            }
         }
 
     }
