@@ -50,5 +50,25 @@ namespace JN_ProyectoAPI.Controllers
             }
         }
 
+
+        [HttpPut]
+        [Route("ActualizarProductos")]
+        public IActionResult ActualizarProductos(ActualizarProductoRequestModel producto)
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@ConsecutivoProducto", producto.ConsecutivoProducto);
+                parametros.Add("@Nombre", producto.Nombre);
+                parametros.Add("@Descripcion", producto.Descripcion);
+                parametros.Add("@Precio", producto.Precio);
+                parametros.Add("@Imagen", producto.Imagen);
+
+                var resultado = context.Execute("ActualizarProducto", parametros);
+                return Ok(resultado);
+            }
+        }
+        
+
     }
 }
