@@ -72,7 +72,7 @@ SET IDENTITY_INSERT [dbo].[tbProducto] ON
 GO
 INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (2, N'Caja de fresas', N'Frutas de temporada', CAST(2280.00 AS Decimal(10, 2)), 1, N'/imagenes/')
 GO
-INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (3, N'Caja de fresas grandes', N'Frutas de exportación', CAST(10000.00 AS Decimal(10, 2)), 1, N'/imagenes/')
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (3, N'Echo Dot 4ta Generación', N'Productos tecno...', CAST(40000.00 AS Decimal(10, 2)), 1, N'/imagenes/')
 GO
 INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (4, N'Caja de fresas peq', N'fresas pequeñillas', CAST(750.00 AS Decimal(10, 2)), 1, N'/imagenes/')
 GO
@@ -124,17 +124,41 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [dbo].[ConsultarProductos]
-	
+CREATE PROCEDURE [dbo].[ActualizarProducto]
+	@ConsecutivoProducto INT,
+    @Nombre VARCHAR(100),
+    @Descripcion VARCHAR(2000),
+    @Precio DECIMAL(10,2),
+    @Imagen VARCHAR(255)
 AS
 BEGIN
+
+    UPDATE dbo.tbProducto
+       SET Nombre = @Nombre,
+           Descripcion = @Descripcion,
+           Precio = @Precio,
+           Imagen = @Imagen
+     WHERE ConsecutivoProducto = @ConsecutivoProducto
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarProductos]
+	@ConsecutivoProducto INT
+AS
+BEGIN
+
+    IF @ConsecutivoProducto = 0
+        SET @ConsecutivoProducto = NULL
 
       SELECT  ConsecutivoProducto,
               Nombre,
               Precio,
               Estado,
-              Imagen
+              Imagen,
+              Descripcion
       FROM  dbo.tbProducto
+      WHERE ConsecutivoProducto = ISNULL(@ConsecutivoProducto,ConsecutivoProducto)
 
 END
 GO
