@@ -6,4 +6,23 @@
         },
     });
 
+    var modal = document.getElementById('staticBackdrop');
+
+    modal.addEventListener('show.bs.modal', function (event) {
+      var trigger = event.relatedTarget;
+
+      var id = trigger.getAttribute('data-id');
+      var name = trigger.getAttribute('data-name');
+      var status = trigger.getAttribute('data-status');
+
+      document.getElementById('ConsecutivoProducto').value = id;
+
+      // Mensaje dinámico
+      var msg = (status === "True")
+        ? "¿Está seguro que desea INACTIVAR el producto: "
+        : "¿Está seguro que desea ACTIVAR el producto: ";
+
+      document.getElementById('modal-message').textContent = msg + name + "?";
+    });
+
 });

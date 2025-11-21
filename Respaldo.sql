@@ -59,6 +59,15 @@ CREATE TABLE [dbo].[tbUsuario](
 ) ON [PRIMARY]
 GO
 
+SET IDENTITY_INSERT [dbo].[tbError] ON 
+GO
+INSERT [dbo].[tbError] ([ConsecutivoError], [ConsecutivoUsuario], [Mensaje], [Origen], [FechaHora]) VALUES (1, 0, N'Object reference not set to an instance of an object.', N'/api/Home/ValidarSesion', CAST(N'2025-11-20T20:51:46.167' AS DateTime))
+GO
+INSERT [dbo].[tbError] ([ConsecutivoError], [ConsecutivoUsuario], [Mensaje], [Origen], [FechaHora]) VALUES (2, 1, N'Object reference not set to an instance of an object.', N'/api/Producto/ConsultarProductos', CAST(N'2025-11-20T20:53:05.223' AS DateTime))
+GO
+SET IDENTITY_INSERT [dbo].[tbError] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[tbPerfil] ON 
 GO
 INSERT [dbo].[tbPerfil] ([ConsecutivoPerfil], [Nombre]) VALUES (1, N'Usuario Administrador')
@@ -70,11 +79,7 @@ GO
 
 SET IDENTITY_INSERT [dbo].[tbProducto] ON 
 GO
-INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (2, N'Caja de fresas', N'Frutas de temporada', CAST(2280.00 AS Decimal(10, 2)), 1, N'/imagenes/')
-GO
-INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (3, N'Echo Dot 4ta Generación', N'Productos tecno...', CAST(40000.00 AS Decimal(10, 2)), 1, N'/imagenes/')
-GO
-INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (4, N'Caja de fresas peq', N'fresas pequeñillas', CAST(750.00 AS Decimal(10, 2)), 1, N'/imagenes/')
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen]) VALUES (6, N'Pizza', N'Pizza mediana para 3 personas', CAST(6500.00 AS Decimal(10, 2)), 0, N'/imagenes/')
 GO
 SET IDENTITY_INSERT [dbo].[tbProducto] OFF
 GO
@@ -139,6 +144,18 @@ BEGIN
            Precio = @Precio,
            Imagen = @Imagen
      WHERE ConsecutivoProducto = @ConsecutivoProducto
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[CambiarEstadoProducto]
+	@ConsecutivoProducto INT
+AS
+BEGIN
+	
+	UPDATE	tbProducto
+	SET		Estado = CASE WHEN Estado = 1 THEN 0 ELSE 1 END
+	WHERE	ConsecutivoProducto = @ConsecutivoProducto
 
 END
 GO

@@ -20,10 +20,14 @@ namespace JN_ProyectoAPI.Controllers
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
+            int consecutivoUsuario = int.TryParse(HttpContext.User.FindFirst("id")?.Value, out var id)
+             ? id
+             : 0;
+
             using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
             {
                 var parametros = new DynamicParameters();
-                parametros.Add("@ConsecutivoUsuario", 0);
+                parametros.Add("@ConsecutivoUsuario", consecutivoUsuario);
                 parametros.Add("@MensajeError", exception?.Error.Message);
                 parametros.Add("@OrigenError", exception?.Path);
 
