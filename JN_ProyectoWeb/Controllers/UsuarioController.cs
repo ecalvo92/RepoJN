@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using Utiles;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JN_ProyectoWeb.Controllers
 {
@@ -42,32 +43,47 @@ namespace JN_ProyectoWeb.Controllers
             }
         }
 
-        //[HttpPost]
-        //public IActionResult Empresa(UsuarioModel usuario)
-        //{
-        //    ViewBag.Mensaje = "La información no se ha actualizado correctamente";
-        //    usuario.ConsecutivoUsuario = (int)HttpContext.Session.GetInt32("ConsecutivoUsuario")!;
+        [HttpPost]
+        public IActionResult Empresa(UsuarioModel usuario, IFormFile ImagenComercial)
+        {
+            usuario.ImagenComercial = "/empresas/";
+            ViewBag.Mensaje = "La información no se ha actualizado correctamente";
+            usuario.ConsecutivoUsuario = (int)HttpContext.Session.GetInt32("ConsecutivoUsuario")!;
 
-        //    using (var context = _http.CreateClient())
-        //    {
-        //        var urlApi = _configuration["Valores:UrlAPI"] + "Usuario/ActualizarPerfil";
-        //        context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-        //        var respuesta = context.PutAsJsonAsync(urlApi, usuario).Result;
+            using (var context = _http.CreateClient())
+            {
+                var urlApi = _configuration["Valores:UrlAPI"] + "Usuario/ActualizarEmpresa";
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                var respuesta = context.PutAsJsonAsync(urlApi, usuario).Result;
 
-        //        if (respuesta.IsSuccessStatusCode)
-        //        {
-        //            var datosApi = respuesta.Content.ReadFromJsonAsync<int>().Result;
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var datosApi = respuesta.Content.ReadFromJsonAsync<int>().Result;
 
-        //            if (datosApi > 0)
-        //            {
-        //                ViewBag.Mensaje = "La información se ha actualizado correctamente";
-        //                HttpContext.Session.SetString("NombreUsuario", usuario.Nombre);
-        //            }
-        //        }
+                    if (datosApi > 0)
+                    {
+                        if (ImagenComercial != null)
+                        {
+                            //save de la imagen
+                            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "empresas");
 
-        //        return View();
-        //    }
-        //}
+                            if (!Directory.Exists(carpetaDestino))
+                                Directory.CreateDirectory(carpetaDestino);
+
+                            string nombreArchivo = usuario.ConsecutivoUsuario + ".png";
+                            string rutaCompleta = Path.Combine(carpetaDestino, nombreArchivo);
+
+                            using var stream = new FileStream(rutaCompleta, FileMode.Create);
+                            ImagenComercial.CopyTo(stream);
+                        }
+
+                        ViewBag.Mensaje = "La información se ha actualizado correctamente";
+                    }
+                }
+
+                return View(usuario);
+            }
+        }
 
         #endregion
 
