@@ -29,8 +29,17 @@
                         </div>
 
                         <div class="col-2 d-flex align-items-center">
-                            <img src="@($"{Model.ImagenComercial}{Model.ConsecutivoUsuario}.png")"
-                                 width="110" height="90" />
+
+                            @if (Model.NombreComercial != "")
+                            {
+                                <img src="@($"{Model.ImagenComercial}{Model.ConsecutivoUsuario}.png")"
+                                     width="110" height="90" />
+                            }
+                            else
+                            {
+                                <img src="~/imagenes/nada.png" width="150" height="130" />
+                            }
+
                         </div>
                     </div>
 
