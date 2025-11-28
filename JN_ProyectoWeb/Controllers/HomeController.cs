@@ -1,5 +1,6 @@
 using JN_ProyectoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using Utiles;
@@ -124,7 +125,21 @@ namespace JN_ProyectoWeb.Controllers
         [HttpGet]
         public IActionResult Principal()
         {
-            return View();
+            using var context = _http.CreateClient();
+            var urlApi = _configuration["Valores:UrlAPI"] + "Usuario/ConsultarUsuarios";
+
+            context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var respuesta = context.GetAsync(urlApi).Result;
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                var datosApi = respuesta.Content.ReadFromJsonAsync<List<UsuarioModel>>().Result;
+                return View(datosApi);
+            }
+
+            ViewBag.Mensaje = "No hay usuarios registrados";
+            return View(new List<UsuarioModel>());
+
         }
 
         [Seguridad]

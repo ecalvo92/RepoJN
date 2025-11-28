@@ -1,3 +1,52 @@
-﻿@{
+﻿@model IEnumerable<UsuarioModel>
+
+@{
     Layout = "_LayoutInterno";
 }
+
+<div class="mt-4">
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-primary text-center">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+    <h4 class="text-center mb-4">Tiendas</h4>
+
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card tienda-card h-100 shadow-sm">
+                        <img class="card-img-top"
+                             src="@($"{item.ImagenComercial}{item.ConsecutivoUsuario}.png")"
+                             onerror="this.src='/img/default.png'"
+                             style="height:160px; object-fit:contain;" />
+
+                        <div class="card-body text-center">
+                            <h6 class="card-title mb-0">@item.NombreComercial</h6>
+                            <h6 class="card-title mb-0">@item.Nombre</h6>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ConsultarTiendas.js" asp-append-version="true"></script>
+
+<style>
+    .tienda-card {
+        transition: transform .2s ease, box-shadow .2s ease;
+        border-radius: 10px;
+    }
+
+        .tienda-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+</style>

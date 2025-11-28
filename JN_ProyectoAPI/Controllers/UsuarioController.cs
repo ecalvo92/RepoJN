@@ -32,6 +32,19 @@ namespace JN_ProyectoAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ConsultarUsuarios")]
+        public IActionResult ConsultarUsuarios()
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+
+                var resultado = context.Query<DatosUsuarioResponseModel>("ConsultarUsuarios", parametros);
+                return Ok(resultado);
+            }
+        }
+
 
         [HttpPut]
         [Route("ActualizarPerfil")]

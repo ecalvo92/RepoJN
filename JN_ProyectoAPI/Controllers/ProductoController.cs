@@ -65,6 +65,7 @@ namespace JN_ProyectoAPI.Controllers
                 parametros.Add("@Descripcion", producto.Descripcion);
                 parametros.Add("@Precio", producto.Precio);
                 parametros.Add("@Imagen", producto.Imagen);
+                parametros.Add("@ConsecutivoUsuario", HttpContext.User.FindFirst("id")?.Value);
 
                 var resultado = context.Execute("ActualizarProducto", parametros);
                 return Ok(resultado);
@@ -79,6 +80,7 @@ namespace JN_ProyectoAPI.Controllers
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("@ConsecutivoProducto", producto.ConsecutivoProducto);
+                parametros.Add("@ConsecutivoUsuario", HttpContext.User.FindFirst("id")?.Value);
 
                 var resultado = context.Execute("CambiarEstadoProducto", parametros);
                 return Ok(resultado);
