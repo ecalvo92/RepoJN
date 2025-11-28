@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Utiles;
 
 namespace JN_ProyectoAPI.Controllers
 {
@@ -75,6 +76,7 @@ namespace JN_ProyectoAPI.Controllers
         {
             using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
             {
+                var helper = new Helper();
                 var parametros = new DynamicParameters();
                 parametros.Add("@CorreoElectronico", CorreoElectronico);
                 var resultado = context.QueryFirstOrDefault<DatosUsuarioResponseModel>("ValidarUsuario", parametros);
@@ -86,7 +88,7 @@ namespace JN_ProyectoAPI.Controllers
 
                     var parametrosActualizar = new DynamicParameters();
                     parametrosActualizar.Add("@ConsecutivoUsuario", resultado.ConsecutivoUsuario);
-                    parametrosActualizar.Add("@Contrasenna", ContrasennaGenerada);
+                    parametrosActualizar.Add("@Contrasenna", helper.Encrypt(ContrasennaGenerada));
                     var resultadoActualizar = context.Execute("ActualizarContrasenna", parametrosActualizar);
 
                     if (resultadoActualizar > 0)
@@ -109,7 +111,7 @@ namespace JN_ProyectoAPI.Controllers
 
         private string GenerarContrasenna()
         {
-            int longitud = 8;
+            int longitud = 10;
             const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             StringBuilder resultado = new();
 
@@ -176,5 +178,6 @@ namespace JN_ProyectoAPI.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 }

@@ -1,6 +1,10 @@
 ﻿using JN_ProyectoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
+using System.Text;
+using Utiles;
 
 namespace JN_ProyectoWeb.Controllers
 {
@@ -78,6 +82,8 @@ namespace JN_ProyectoWeb.Controllers
         [HttpPost]
         public IActionResult Seguridad(UsuarioModel usuario)
         {
+            var helper = new Helper();
+            usuario.Contrasenna = helper.Encrypt(usuario.Contrasenna);
             ViewBag.Mensaje = "La información no se ha actualizado correctamente";
             usuario.ConsecutivoUsuario = (int)HttpContext.Session.GetInt32("ConsecutivoUsuario")!;
 

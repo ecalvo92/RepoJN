@@ -1,5 +1,8 @@
 using JN_ProyectoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
+using System.Text;
+using Utiles;
 
 namespace JN_ProyectoWeb.Controllers
 {
@@ -24,6 +27,8 @@ namespace JN_ProyectoWeb.Controllers
         [HttpPost]
         public IActionResult Index(UsuarioModel usuario)
         {
+            var helper = new Helper();
+            usuario.Contrasenna = helper.Encrypt(usuario.Contrasenna);
             using (var context = _http.CreateClient())
             {
                 var urlApi = _configuration["Valores:UrlAPI"] + "Home/ValidarSesion";
@@ -61,6 +66,8 @@ namespace JN_ProyectoWeb.Controllers
         [HttpPost]
         public IActionResult Registro(UsuarioModel usuario)
         {
+            var helper = new Helper();
+            usuario.Contrasenna = helper.Encrypt(usuario.Contrasenna);
             using (var context = _http.CreateClient())
             {
                 var urlApi = _configuration["Valores:UrlAPI"] + "Home/Registro";
@@ -126,5 +133,6 @@ namespace JN_ProyectoWeb.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
     }
 }
