@@ -1,0 +1,28 @@
+﻿.tienda-card {
+    transition: transform .2s ease, box-shadow .2s ease;
+    border-radius: 10px;
+}
+
+    .tienda-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+
+#stars .star {
+    font-size: 2.2rem;
+    cursor: pointer;
+    margin: 0 6px;
+    transition: transform .08s ease, color .12s ease;
+    color: #cfcfcf;
+}
+
+    #stars .star.hovered,
+    #stars .star.selected {
+        color: #ffc107;
+        transform: translateY(-2px);
+    }
+
+.modal-body {
+    text-align: center;
+}

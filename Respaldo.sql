@@ -45,6 +45,19 @@ CREATE TABLE [dbo].[tbProducto](
 ) ON [PRIMARY]
 GO
 
+CREATE TABLE [dbo].[tbResenna](
+	[ConsecutivoResenna] [int] IDENTITY(1,1) NOT NULL,
+	[ConsecutivoUsuario] [int] NOT NULL,
+	[ConsecutivoProducto] [int] NOT NULL,
+	[Descripcion] [varchar](255) NOT NULL,
+	[Calificacion] [int] NOT NULL,
+ CONSTRAINT [PK_tbResenna] PRIMARY KEY CLUSTERED 
+(
+	[ConsecutivoResenna] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[tbUsuario](
 	[ConsecutivoUsuario] [int] IDENTITY(1,1) NOT NULL,
 	[Identificacion] [varchar](15) NOT NULL,
@@ -91,6 +104,15 @@ GO
 SET IDENTITY_INSERT [dbo].[tbProducto] OFF
 GO
 
+SET IDENTITY_INSERT [dbo].[tbResenna] ON 
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion]) VALUES (1, 6, 2, N'Excelente producto', 3)
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion]) VALUES (2, 6, 1, N'', 1)
+GO
+SET IDENTITY_INSERT [dbo].[tbResenna] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[tbUsuario] ON 
 GO
 INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (4, N'117710474', N'BRAYTON MACCOY ARTOLA', N'bmaccoy0474@ufide.ac.cr', N'SOFCEkEpmdc0M6jHsUvwKQ==', 1, 1, N'Microsoft', N'/empresas/')
@@ -106,6 +128,18 @@ ALTER TABLE [dbo].[tbProducto]  WITH CHECK ADD  CONSTRAINT [FK_tbProducto_tbUsua
 REFERENCES [dbo].[tbUsuario] ([ConsecutivoUsuario])
 GO
 ALTER TABLE [dbo].[tbProducto] CHECK CONSTRAINT [FK_tbProducto_tbUsuario]
+GO
+
+ALTER TABLE [dbo].[tbResenna]  WITH CHECK ADD  CONSTRAINT [FK_tbResenna_tbProducto] FOREIGN KEY([ConsecutivoProducto])
+REFERENCES [dbo].[tbProducto] ([ConsecutivoProducto])
+GO
+ALTER TABLE [dbo].[tbResenna] CHECK CONSTRAINT [FK_tbResenna_tbProducto]
+GO
+
+ALTER TABLE [dbo].[tbResenna]  WITH CHECK ADD  CONSTRAINT [FK_tbResenna_tbResenna] FOREIGN KEY([ConsecutivoUsuario])
+REFERENCES [dbo].[tbUsuario] ([ConsecutivoUsuario])
+GO
+ALTER TABLE [dbo].[tbResenna] CHECK CONSTRAINT [FK_tbResenna_tbResenna]
 GO
 
 ALTER TABLE [dbo].[tbUsuario]  WITH CHECK ADD  CONSTRAINT [FK_tbUsuario_tbPerfil] FOREIGN KEY([ConsecutivoPerfil])
@@ -180,6 +214,20 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[CalificarProducto]
+	@ConsecutivoProducto int,
+	@RatingValue int,
+	@Resenna varchar(255),
+	@ConsecutivoUsuario int
+AS
+BEGIN
+
+    INSERT INTO dbo.tbResenna (ConsecutivoUsuario,ConsecutivoProducto,Descripcion,Calificacion)
+    VALUES (@ConsecutivoUsuario,@ConsecutivoProducto,@Resenna,@RatingValue)
+
+END
+GO
+
 CREATE PROCEDURE [dbo].[CambiarEstadoProducto]
 	@ConsecutivoProducto INT,
 	@ConsecutivoUsuario INT
@@ -204,14 +252,16 @@ BEGIN
         SET @ConsecutivoProducto = NULL
 
       SELECT  ConsecutivoProducto,
-              Nombre,
+              P.Nombre,
               Precio,
-              Estado,
+              P.Estado,
               Imagen,
-              Descripcion
-      FROM  dbo.tbProducto
+              Descripcion,
+              U.NombreComercial
+      FROM  dbo.tbProducto P
+      INNER JOIN dbo.tbUsuario U ON P.ConsecutivoUsuario = U.ConsecutivoUsuario
       WHERE ConsecutivoProducto = ISNULL(@ConsecutivoProducto,ConsecutivoProducto)
-        AND ConsecutivoUsuario = @ConsecutivoUsuario
+        AND P.ConsecutivoUsuario = @ConsecutivoUsuario
 
 END
 GO

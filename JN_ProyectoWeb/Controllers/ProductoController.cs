@@ -142,6 +142,25 @@ namespace JN_ProyectoWeb.Controllers
             return View(respuesta);
         }
 
+        [HttpPost]
+        public JsonResult Calificar(string ratingValue, string resenna, int consecutivoProducto)
+        {
+            using (var context = _http.CreateClient())
+            {
+                var calificacion = new CalificacionModel
+                {
+                    RatingValue = int.Parse(ratingValue),
+                    Resenna = resenna ?? string.Empty,
+                    ConsecutivoProducto = consecutivoProducto
+                };
+
+                var urlApi = _configuration["Valores:UrlAPI"] + "Producto/CalificarProducto";
+                context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                var respuesta = context.PostAsJsonAsync(urlApi, calificacion).Result;
+                return Json("ok");
+            }
+        }
+
         private List<ProductoModel>? ConsultarDatosProductos(int id)
         {
             using var context = _http.CreateClient();

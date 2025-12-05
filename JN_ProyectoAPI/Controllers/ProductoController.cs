@@ -103,5 +103,22 @@ namespace JN_ProyectoAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("CalificarProducto")]
+        public IActionResult CalificarProducto(RegistroCalificacionRequestModel calificacion)
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@ConsecutivoProducto", calificacion.ConsecutivoProducto);
+                parametros.Add("@RatingValue", calificacion.RatingValue);
+                parametros.Add("@Resenna", calificacion.Resenna);
+                parametros.Add("@ConsecutivoUsuario", HttpContext.User.FindFirst("id")?.Value);
+
+                var resultado = context.Execute("CalificarProducto", parametros);
+                return Ok(resultado);
+            }
+        }        
+
     }
 }
