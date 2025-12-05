@@ -113,6 +113,7 @@ namespace JN_ProyectoWeb.Controllers
             return View();
         }
 
+
         [HttpPost]
         public IActionResult CambiarEstado(ProductoModel producto)
         {
@@ -134,10 +135,35 @@ namespace JN_ProyectoWeb.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult VerProductosTienda(int id)
+        {
+            var respuesta = ConsultarDatosProductosTienda(0, id);
+            return View(respuesta);
+        }
+
         private List<ProductoModel>? ConsultarDatosProductos(int id)
         {
             using var context = _http.CreateClient();
             var urlApi = _configuration["Valores:UrlAPI"] + "Producto/ConsultarProductos?ConsecutivoProducto=" + id;
+
+            context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var respuesta = context.GetAsync(urlApi).Result;
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                var datosApi = respuesta.Content.ReadFromJsonAsync<List<ProductoModel>>().Result;
+                return datosApi;
+            }
+
+            ViewBag.Mensaje = "No hay productos registrados";
+            return [];
+        }
+
+        private List<ProductoModel>? ConsultarDatosProductosTienda(int ConsecutivoProducto, int ConsecutivoUsuario)
+        {
+            using var context = _http.CreateClient();
+            var urlApi = _configuration["Valores:UrlAPI"] + $"Producto/ConsultarProductosTienda?ConsecutivoProducto={ConsecutivoProducto}&ConsecutivoUsuario={ConsecutivoUsuario}";
 
             context.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
             var respuesta = context.GetAsync(urlApi).Result;

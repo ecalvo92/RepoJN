@@ -31,26 +31,28 @@
 <body>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-                <div class="app-brand demo">
-                    <a asp-action="Principal" asp-controller="Home" class="app-brand-link">
-                        <img src="~/lib/img/logo.png" alt="" />
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">Web JN</span>
-                    </a>
 
-                    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
-                    </a>
-                </div>
+            @if (consecutivoPerfil == 1)
+            {
+                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                    <div class="app-brand demo">
+                        <a asp-action="Principal" asp-controller="Home" class="app-brand-link">
+                            <img src="~/lib/img/logo.png" alt="" />
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2">Web JN</span>
+                        </a>
 
-                <div class="menu-inner-shadow"></div>
+                        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                        </a>
+                    </div>
 
-                @if (consecutivoPerfil == 1)
-                {
-                  <ul class="menu-inner py-1">
-                      <li class="menu-header small text-uppercase">
-                          <span class="menu-header-text">Mantenimientos</span>
-                      </li>
+                    <div class="menu-inner-shadow"></div>
+
+
+                    <ul class="menu-inner py-1">
+                        <li class="menu-header small text-uppercase">
+                            <span class="menu-header-text">Mantenimientos</span>
+                        </li>
 
                         <li class="menu-item">
                             <a asp-action="Empresa" asp-controller="Usuario" class="menu-link">
@@ -59,16 +61,19 @@
                             </a>
                         </li>
 
-                      <li class="menu-item">
-                          <a asp-action="ConsultarProductos" asp-controller="Producto" class="menu-link">
-                              <i class="fa fa-tags me-2"></i>
-                              <div data-i18n="Analytics">Productos</div>
-                          </a>
-                      </li>
-                  </ul>
-                }
+                        <li class="menu-item">
+                            <a asp-action="ConsultarProductos" asp-controller="Producto" class="menu-link">
+                                <i class="fa fa-tags me-2"></i>
+                                <div data-i18n="Analytics">Productos</div>
+                            </a>
+                        </li>
+                    </ul>
 
-            </aside>
+
+                </aside>
+            }
+
+
             <div class="layout-page">
 
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
@@ -81,7 +86,7 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
-                        
+
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     @nombreUsuario
@@ -110,7 +115,7 @@
                                             <i class="bx bx-cog me-2"></i>
                                             <span class="align-middle">Seguridad</span>
                                         </a>
-                                    </li>                                   
+                                    </li>
                                     <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
@@ -147,7 +152,7 @@
 
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    
+
     @* Sección JS *@
     <script src="~/lib/js/popper.js"></script>
     <script src="~/lib/js/bootstrap.js"></script>
@@ -157,7 +162,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
-   
+
     <script>
         window.addEventListener("pageshow", function (event) {
             if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {

@@ -34,6 +34,22 @@ namespace JN_ProyectoAPI.Controllers
         }
 
 
+        [HttpGet]
+        [Route("ConsultarProductosTienda")]
+        public IActionResult ConsultarProductosTienda(int ConsecutivoProducto, int ConsecutivoUsuario)
+        {
+            using (var context = new SqlConnection(_configuration["ConnectionStrings:BDConnection"]))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@ConsecutivoProducto", ConsecutivoProducto);
+                parametros.Add("@ConsecutivoUsuario", ConsecutivoUsuario);
+
+                var resultado = context.Query<DatosProductoResponseModel>("ConsultarProductos", parametros);
+                return Ok(resultado);
+            }
+        }
+
+
         [HttpPost]
         [Route("AgregarProductos")]
         public IActionResult AgregarProductos(RegistroProductoRequestModel producto)

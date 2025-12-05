@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UsuarioModel>
+﻿@model IEnumerable<ProductoModel>
 
 @{
     Layout = "_LayoutInterno";
@@ -13,7 +13,11 @@
         </div>
     }
 
-    <h4 class="text-center mb-4">Tiendas</h4>
+    
+    <h4 class="text-center mb-4">
+        <a asp-action="Principal" asp-controller="Home">Tiendas > </a>
+        @Model.FirstOrDefault()!.NombreComercial
+    </h4>
 
     <div class="container">
         <div class="row">
@@ -22,21 +26,14 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card tienda-card h-70 shadow-sm">
                         <img class="card-img-top"
-                             src="@($"{item.ImagenComercial}{item.ConsecutivoUsuario}.png")"
+                             src="@($"{item.Imagen}{item.ConsecutivoProducto}.png")"
                              onerror="this.src='/img/default.png'"
-                             style="height:140px; object-fit:contain;" />
+                             style="object-fit:contain;" />
 
                         <div class="card-body-images text-center">
-                            <h6 class="card-title mb-2">@item.NombreComercial</h6>
-                            <h6 class="card-title mb-2">@item.Nombre</h6>
-
-                            <a class="btn btn-primary btn-sm mt-2"
-                               asp-controller="Producto"
-                               asp-action="VerProductosTienda"
-                               asp-route-id="@item.ConsecutivoUsuario">
-                                Ver productos
-                            </a>
-
+                            <h6 class="card-title mb-2">Producto: @item.Nombre</h6>
+                            <h6 class="card-title mb-2">Detalle: @item.Descripcion</h6>
+                            <h6 class="card-title mb-2">Precio: $@item.Precio.ToString("N2")</h6>
                         </div>
                     </div>
                 </div>

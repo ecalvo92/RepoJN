@@ -3871,6 +3871,11 @@ textarea.form-control-lg {
   padding: 1.5rem 1.5rem;
 }
 
+.card-body-images {
+    flex: 1 1 auto;
+    margin-bottom: 30px;
+}
+
 .card-title {
   margin-bottom: 0.875rem;
 }
@@ -3933,6 +3938,7 @@ textarea.form-control-lg {
 .card-img-top,
 .card-img-bottom {
   width: 100%;
+  padding:30px;
 }
 
 .card-img,
