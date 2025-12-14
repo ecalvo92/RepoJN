@@ -51,6 +51,7 @@ CREATE TABLE [dbo].[tbResenna](
 	[ConsecutivoProducto] [int] NOT NULL,
 	[Descripcion] [varchar](255) NOT NULL,
 	[Calificacion] [int] NOT NULL,
+	[Fecha] [datetime] NOT NULL,
  CONSTRAINT [PK_tbResenna] PRIMARY KEY CLUSTERED 
 (
 	[ConsecutivoResenna] ASC
@@ -83,6 +84,8 @@ INSERT [dbo].[tbError] ([ConsecutivoError], [ConsecutivoUsuario], [Mensaje], [Or
 GO
 INSERT [dbo].[tbError] ([ConsecutivoError], [ConsecutivoUsuario], [Mensaje], [Origen], [FechaHora]) VALUES (3, 4, N'Procedure or function ''ConsultarProductos'' expects parameter ''@ConsecutivoUsuario'', which was not supplied.', N'/api/Producto/ConsultarProductos', CAST(N'2025-11-27T20:34:30.627' AS DateTime))
 GO
+INSERT [dbo].[tbError] ([ConsecutivoError], [ConsecutivoUsuario], [Mensaje], [Origen], [FechaHora]) VALUES (4, 4, N'Could not find stored procedure ''AdminResponse''.', N'/api/Admin/Peores', CAST(N'2025-12-14T08:27:00.947' AS DateTime))
+GO
 SET IDENTITY_INSERT [dbo].[tbError] OFF
 GO
 
@@ -101,14 +104,58 @@ INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Prec
 GO
 INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (2, N'Echo Dot MS', N'Conocidos como Alexas', CAST(120.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
 GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (3, N'Play 5.1', N'PlayStation', CAST(600.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (4, N'Play 5.2', N'PlayStation', CAST(700.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (5, N'Play 5.3', N'PlayStation', CAST(800.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (6, N'Play 5.4', N'PlayStation', CAST(90.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (7, N'Play 5.5', N'PlayStation', CAST(1000.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (8, N'Play 5.6', N'PlayStation', CAST(1100.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
+INSERT [dbo].[tbProducto] ([ConsecutivoProducto], [Nombre], [Descripcion], [Precio], [Estado], [Imagen], [ConsecutivoUsuario]) VALUES (9, N'Play 5.7', N'PlayStation', CAST(1200.00 AS Decimal(10, 2)), 1, N'/imagenes/', 4)
+GO
 SET IDENTITY_INSERT [dbo].[tbProducto] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[tbResenna] ON 
 GO
-INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion]) VALUES (1, 6, 2, N'Excelente producto', 3)
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (1, 6, 6, N'Es una buena promoción, excelente.', 3, CAST(N'2025-12-14T08:28:48.033' AS DateTime))
 GO
-INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion]) VALUES (2, 6, 1, N'', 1)
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (2, 6, 6, N'No se vale, ayer lo compré en 600 dólares...', 1, CAST(N'2024-12-10T08:29:36.930' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (3, 6, 3, N'', 3, CAST(N'2025-12-14T08:31:30.293' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (4, 6, 4, N'', 2, CAST(N'2025-12-14T08:31:32.520' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (5, 6, 5, N'', 3, CAST(N'2025-12-14T08:31:34.867' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (6, 6, 5, N'', 3, CAST(N'2025-12-14T08:31:38.200' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (7, 6, 5, N'', 3, CAST(N'2025-12-14T08:31:42.133' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (8, 6, 8, N'', 1, CAST(N'2025-12-14T08:31:44.820' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (9, 6, 8, N'', 1, CAST(N'2025-12-14T08:31:47.233' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (10, 6, 8, N'', 1, CAST(N'2025-12-14T08:31:49.313' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (11, 6, 8, N'', 1, CAST(N'2025-12-14T08:31:51.323' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (12, 6, 7, N'', 1, CAST(N'2025-12-14T08:31:53.390' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (13, 6, 9, N'', 1, CAST(N'2025-12-14T08:31:55.593' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (14, 6, 6, N'', 3, CAST(N'2025-12-14T08:31:58.407' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (15, 6, 2, N'', 3, CAST(N'2025-12-14T08:32:01.007' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (16, 6, 3, N'', 3, CAST(N'2025-12-14T08:32:04.500' AS DateTime))
+GO
+INSERT [dbo].[tbResenna] ([ConsecutivoResenna], [ConsecutivoUsuario], [ConsecutivoProducto], [Descripcion], [Calificacion], [Fecha]) VALUES (17, 6, 4, N'', 3, CAST(N'2025-12-14T08:32:07.493' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[tbResenna] OFF
 GO
@@ -120,6 +167,14 @@ GO
 INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (5, N'305550650', N'JOHNNY FABIAN CASTILLO FALLAS', N'jcastillo50650@ufide.ac.cr', N'qvaCXOjOlWMez+4lOcGq9g==', 1, 1, N'SONY', N'/empresas/')
 GO
 INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (6, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'dPSXBgbFVEcXsUyc/3MgDg==', 1, 2, NULL, NULL)
+GO
+INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (7, N'304590416', N'FRANCINI DE LOS ANGELES ROMERO ARAYA', N'ecalvo90416@ufide.ac.cr', N'+sukSIHuC24UnTkqq8VKDQ==', 1, 1, N'90416 SA', N'/empresas/')
+GO
+INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (8, N'304590417', N'MERCEDES FRANCISCA MAROTO HERNANDEZ', N'ecalvo90417@ufide.ac.cr', N'gmS8S0S7ufhxPQocCl+GWA==', 1, 1, N'90417 SA', N'/empresas/')
+GO
+INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (9, N'304590418', N'JESUS ALBERTO NUÑEZ MOYA', N'ecalvo90418@ufide.ac.cr', N'ZZms9o9trkbdluhdMDdDzw==', 1, 1, N'90418 SA', N'/empresas/')
+GO
+INSERT [dbo].[tbUsuario] ([ConsecutivoUsuario], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [ConsecutivoPerfil], [NombreComercial], [ImagenComercial]) VALUES (10, N'304590419', N'90419', N'90419', N'90419', 1, 1, N'90419 SA', N'/empresas/')
 GO
 SET IDENTITY_INSERT [dbo].[tbUsuario] OFF
 GO
@@ -222,8 +277,8 @@ CREATE PROCEDURE [dbo].[CalificarProducto]
 AS
 BEGIN
 
-    INSERT INTO dbo.tbResenna (ConsecutivoUsuario,ConsecutivoProducto,Descripcion,Calificacion)
-    VALUES (@ConsecutivoUsuario,@ConsecutivoProducto,@Resenna,@RatingValue)
+    INSERT INTO dbo.tbResenna (ConsecutivoUsuario,ConsecutivoProducto,Descripcion,Calificacion,Fecha)
+    VALUES (@ConsecutivoUsuario,@ConsecutivoProducto,@Resenna,@RatingValue,GETDATE())
 
 END
 GO
@@ -238,6 +293,35 @@ BEGIN
 	SET		Estado = CASE WHEN Estado = 1 THEN 0 ELSE 1 END
 	WHERE	ConsecutivoProducto = @ConsecutivoProducto
 		AND ConsecutivoUsuario = @ConsecutivoUsuario
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[CantidadProductos]
+    @ConsecutivoUsuario INT
+AS
+BEGIN
+
+    SELECT  COUNT(*) 'Cantidad'
+    FROM    tbProducto
+    WHERE   ConsecutivoUsuario = @ConsecutivoUsuario
+        AND Estado = 1
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[CantidadResennas]
+    @ConsecutivoUsuario INT
+AS
+BEGIN
+
+    SELECT  COUNT(*) 'Cantidad'
+    FROM    tbResenna R
+    INNER   JOIN tbProducto P ON R.ConsecutivoProducto = P.ConsecutivoProducto
+    WHERE   P.ConsecutivoUsuario = @ConsecutivoUsuario
+        AND P.Estado = 1
+        AND R.Fecha BETWEEN DATEADD(YEAR, -1, GETDATE()) AND GETDATE()
+        AND R.Calificacion != 2
 
 END
 GO
@@ -307,6 +391,46 @@ BEGIN
       INNER JOIN dbo.tbPerfil P ON U.ConsecutivoPerfil = P.ConsecutivoPerfil
       WHERE U.Estado = 1
         AND U.ConsecutivoPerfil = 1
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[Mejores]
+    @ConsecutivoUsuario INT
+AS
+BEGIN
+
+    SELECT  TOP 5
+            COUNT(*) 'Cantidad',
+            P.Nombre,
+            P.Precio
+    FROM    tbResenna R
+    INNER   JOIN tbProducto P ON R.ConsecutivoProducto = P.ConsecutivoProducto
+    WHERE   P.ConsecutivoUsuario = @ConsecutivoUsuario
+        AND Calificacion = 3
+        AND R.Fecha BETWEEN DATEADD(YEAR, -1, GETDATE()) AND GETDATE()
+    GROUP BY P.Nombre, P.Precio
+    ORDER BY COUNT(*) DESC
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[Peores]
+    @ConsecutivoUsuario INT
+AS
+BEGIN
+
+    SELECT  TOP 5
+            COUNT(*) 'Cantidad',
+            P.Nombre,
+            P.Precio
+    FROM    tbResenna R
+    INNER   JOIN tbProducto P ON R.ConsecutivoProducto = P.ConsecutivoProducto
+    WHERE   P.ConsecutivoUsuario = @ConsecutivoUsuario
+        AND Calificacion = 1
+        AND R.Fecha BETWEEN DATEADD(YEAR, -1, GETDATE()) AND GETDATE()
+    GROUP BY P.Nombre, P.Precio
+    ORDER BY COUNT(*) DESC
 
 END
 GO
