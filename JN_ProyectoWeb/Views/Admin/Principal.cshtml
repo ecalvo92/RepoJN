@@ -1,0 +1,111 @@
+﻿@{
+    Layout = "_LayoutInterno";
+}
+
+<div class="row">
+
+
+    <div class="col-lg-7 mb-4 order-0">
+        <div class="card">
+            <div class="d-flex align-items-end row">
+                <div class="col-sm-12">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Productos Mejor Calificados!</h5>
+
+                        <table id="tabla" class="table mb-4">
+                            <thead>
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.Mejores)
+                                {
+                                    <tr>
+                                        <td>@item.Cantidad</td>
+                                        <td>@item.Nombre</td>
+                                        <td>¢ @item.Precio.ToString("N2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card mt-4">
+            <div class="d-flex align-items-end row">
+                <div class="col-sm-12">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Productos Peor Calificados!</h5>
+
+                        <table id="tabla" class="table mb-4">
+                            <thead>
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.Peores)
+                                {
+                                    <tr>
+                                        <td>@item.Cantidad</td>
+                                        <td>@item.Nombre</td>
+                                        <td>¢ @item.Precio.ToString("N2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-5 col-md-4 order-1">
+        <div class="row">
+
+
+            <div class="col-lg-6 col-md-12 col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <div class="avatar flex-shrink-0">
+                                <img src="~/lib/img/wallet.png" alt="chart success" class="rounded">
+                            </div>
+                        </div>
+                        <span class="fw-semibold d-block mb-1">Cantidad Productos</span>
+                        <h3 class="card-title mb-2">@ViewBag.CantidadProductos</h3>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-12 col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <div class="avatar flex-shrink-0">
+                                <img src="~/lib/img/wallet-info.png" alt="Credit Card" class="rounded">
+                            </div>
+                        </div>
+                        <span class="fw-semibold d-block mb-1">Cantidad Reseñas</span>
+                        <h3 class="card-title mb-2">@ViewBag.CantidadResennas</h3>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

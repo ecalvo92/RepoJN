@@ -16,7 +16,16 @@
     
     <h4 class="text-center mb-4">
         <a asp-action="Principal" asp-controller="Home">Tiendas > </a>
-        @Model.FirstOrDefault()!.NombreComercial
+
+        @if (Model.FirstOrDefault() != null)
+        {
+            @Model.FirstOrDefault()!.NombreComercial
+        }
+        else
+        {
+            <span class="text-muted">No hay productos registrados</span>
+        }
+
     </h4>
 
     <div class="container">
