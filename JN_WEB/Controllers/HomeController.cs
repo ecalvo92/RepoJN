@@ -9,10 +9,5 @@ namespace JN_WEB.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
     }
 }
