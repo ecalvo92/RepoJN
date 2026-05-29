@@ -18,5 +18,11 @@ namespace JN_WEB.Controllers
         {
             return View();
         }
+
+        public IActionResult Principal()
+        {
+            return View();
+        }
+
     }
 }
