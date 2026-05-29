@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace JN_WEB.Controllers
 {
@@ -10,7 +9,12 @@ namespace JN_WEB.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Registrar()
+        {
+            return View();
+        }
+
+        public IActionResult RecuperarAcceso()
         {
             return View();
         }
