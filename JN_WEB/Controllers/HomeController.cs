@@ -1,3 +1,4 @@
+using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JN_WEB.Controllers
@@ -9,10 +10,21 @@ namespace JN_WEB.Controllers
             return View();
         }
 
+        #region Registrar
+
+        [HttpGet]
         public IActionResult Registrar()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Registrar(UsuarioModel model)
+        {
+            return View();
+        }
+
+        #endregion
 
         public IActionResult RecuperarAcceso()
         {
