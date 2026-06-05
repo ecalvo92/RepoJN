@@ -2,6 +2,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+//Espacio de dependencias
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
