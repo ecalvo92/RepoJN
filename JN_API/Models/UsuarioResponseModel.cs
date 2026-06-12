@@ -1,0 +1,13 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace JN_API.Models
+{
+    public class UsuarioResponseModel
+    {
+        public string Identificacion { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string CorreoElectronico { get; set; } = string.Empty;
+        public string Contrasenna { get; set; } = string.Empty;
+        public bool Estado { get; set; }
+    }
+}

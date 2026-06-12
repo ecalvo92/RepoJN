@@ -2,7 +2,7 @@
 
 namespace JN_API.Models
 {
-    public class UsuarioModel
+    public class RegistroUsuarioRequestModel
     {
         [Required]
         public string Identificacion { get; set; } = string.Empty;
