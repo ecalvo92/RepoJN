@@ -7,11 +7,10 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+//Middleware de Errores
+app.UseExceptionHandler("/Error/CapturarError");
+
+app.UseHsts();
 
 app.UseHttpsRedirection();
 
