@@ -31,11 +31,11 @@ $(function () {
       },
       CorreoElectronico: {
         required: "Campo obligatorio",
-        email: "Formato no v·lido"
+        email: "Formato no v√°lido"
       },
       Contrasenna: {
         required: "Campo obligatorio",
-        minlength: "MÌnimo 6 caracteres",
+        minlength: "M√≠nimo 6 caracteres",
         caracterEspecial: "Al menos 1 caracter especial"
       }
     },
