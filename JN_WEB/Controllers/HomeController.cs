@@ -30,7 +30,7 @@ namespace JN_WEB.Controllers
             }
             else if(response.StatusCode == HttpStatusCode.NotFound)
             {
-                //Mensaje
+                ViewBag.Mensaje = response.Content.ReadAsStringAsync().Result;
                 return View();
             }
 
@@ -53,7 +53,18 @@ namespace JN_WEB.Controllers
             using var client = _http.CreateClient();
             var url = _config["Valores:UrlApi"] + "Home/RegistrarAPI";
             var response = client.PostAsJsonAsync(url, model).Result;
-            return View();
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                ViewBag.Mensaje = response.Content.ReadAsStringAsync().Result;
+                return View();
+            }
+
+            throw new Exception("Error al registrar usuario");
         }
 
         #endregion

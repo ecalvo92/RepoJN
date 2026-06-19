@@ -9,6 +9,14 @@
             <div class="auth-logo">
                 <a asp-action="Index" asp-controller="Home"><img src="~/images/logo-fidelitas.png" alt="Logo"></a>
             </div>
+
+            @if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-info alert-dismissible show fade text-center mb-4">
+                    @ViewBag.Mensaje
+                </div>
+            }
+
             <h1 class="auth-title">Crear Cuenta</h1>
 
             <form asp-action="Registrar" asp-controller="Home" method="post">
