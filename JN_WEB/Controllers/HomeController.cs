@@ -2,6 +2,7 @@ using JN_WEB.Models;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text.Json;
 
 namespace JN_WEB.Controllers
 {
@@ -25,7 +26,12 @@ namespace JN_WEB.Controllers
             var response = client.PostAsJsonAsync(url, model).Result;
 
             if (response.StatusCode == HttpStatusCode.OK)
-            { 
+            {
+                var datos = response.Content.ReadFromJsonAsync<UsuarioModel>().Result;
+
+                HttpContext.Session.SetString("Autenticado", "1");
+                HttpContext.Session.SetString("Nombre", datos!.Nombre);
+
                 return RedirectToAction("Principal", "Home");
             }
             else if(response.StatusCode == HttpStatusCode.NotFound)
@@ -78,6 +84,27 @@ namespace JN_WEB.Controllers
         {
             return View();
         }
+
+        public IActionResult Perfil()
+        {
+            return View();
+        }
+
+        public IActionResult Seguridad()
+        {
+            return View();
+        }
+
+        #region Cerrar Sesión
+
+        [HttpGet]
+        public IActionResult Salir()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
 
     }
 }

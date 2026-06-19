@@ -4,11 +4,14 @@ builder.Services.AddControllersWithViews();
 
 //Espacio de dependencias
 builder.Services.AddHttpClient();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
 //Middleware de Errores
 app.UseExceptionHandler("/Error/CapturarError");
+
+app.UseSession();
 
 app.UseHsts();
 
