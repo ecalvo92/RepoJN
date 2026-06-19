@@ -34,11 +34,33 @@ CREATE TABLE [dbo].[tbUsuario](
 ) ON [PRIMARY]
 GO
 
+SET IDENTITY_INSERT [dbo].[tbError] ON 
+GO
+INSERT [dbo].[tbError] ([Consecutivo], [Mensaje], [Lugar], [FechaHora], [ConsecutivoUsuario]) VALUES (1, N'Violation of UNIQUE KEY constraint ''UK_Identificacion''. Cannot insert duplicate key in object ''dbo.tbUsuario''. The duplicate key value is (304590415).
+The statement has been terminated.', N'/api/Home/RegistrarAPI', CAST(N'2026-06-18T18:41:20.870' AS DateTime), 0)
+GO
+SET IDENTITY_INSERT [dbo].[tbError] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[tbUsuario] ON 
 GO
 INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado]) VALUES (1, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'90415', 1)
 GO
+INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado]) VALUES (5, N'118440532', N'JIMENEZ RIVERA DANIEL GUILLERMO', N'djimenez40532@ufide.ac.cr', N'40532*', 1)
+GO
 SET IDENTITY_INSERT [dbo].[tbUsuario] OFF
+GO
+
+ALTER TABLE [dbo].[tbUsuario] ADD  CONSTRAINT [UK_CorreoElectronico] UNIQUE NONCLUSTERED 
+(
+	[CorreoElectronico] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tbUsuario] ADD  CONSTRAINT [UK_Identificacion] UNIQUE NONCLUSTERED 
+(
+	[Identificacion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
 CREATE PROCEDURE [dbo].[spIniciarSesionUsuario]
@@ -78,10 +100,17 @@ CREATE PROCEDURE [dbo].[spRegistrarUsuario]
 AS
 BEGIN
 
-    DECLARE @Estado BIT = 1
+    IF NOT EXISTS (SELECT 1 FROM tbUsuario
+                  WHERE Identificacion = @Identificacion
+                    OR  CorreoElectronico = @CorreoElectronico)
+    BEGIN
+
+        DECLARE @Estado BIT = 1
 	
-    INSERT INTO dbo.tbUsuario(Identificacion,Nombre,CorreoElectronico,Contrasenna,Estado)
-    VALUES(@Identificacion,@Nombre,@CorreoElectronico,@Contrasenna,@Estado)
+        INSERT INTO dbo.tbUsuario(Identificacion,Nombre,CorreoElectronico,Contrasenna,Estado)
+        VALUES(@Identificacion,@Nombre,@CorreoElectronico,@Contrasenna,@Estado)
+
+    END
 
 END
 GO
