@@ -1,42 +1,24 @@
-$(function () {
+Ôªø$(function () {
 
-  $.validator.addMethod("caracterEspecial", function (value, element) {
-    return this.optional(element) || /[!@#$%^&*(),.?":{}|<>]/.test(value);
-  }, "");
-
-  $("#Registrar").validate({
+  $("#IniciarSesion").validate({
     rules: {
-      Identificacion: {
-        required: true
-      },
-      Nombre: {
-        required: true
-      },
       CorreoElectronico: {
         required: true,
         email: true
       },
       Contrasenna: {
         required: true,
-        minlength: 5,
-        caracterEspecial: true
+        minlength: 5
       }
     },
     messages: {
-      Identificacion: {
-        required: "Campo obligatorio"
-      },
-      Nombre: {
-        required: "Campo obligatorio"
-      },
       CorreoElectronico: {
         required: "Campo obligatorio",
-        email: "Formato no v·lido"
+        email: "Formato no v√°lido"
       },
       Contrasenna: {
         required: "Campo obligatorio",
-        minlength: "MÌnimo 6 caracteres",
-        caracterEspecial: "Al menos 1 caracter especial"
+        minlength: "M√≠nimo 6 caracteres"
       }
     },
     errorElement: "span",
