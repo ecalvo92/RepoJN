@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-  $("#IniciarSesion").validate({
+  $("#IndexForm").validate({
     rules: {
       CorreoElectronico: {
         required: true,
@@ -18,7 +18,7 @@
       },
       Contrasenna: {
         required: "Campo obligatorio",
-        minlength: "Mínimo 6 caracteres"
+        minlength: "Mínimo 5 caracteres"
       }
     },
     errorElement: "span",

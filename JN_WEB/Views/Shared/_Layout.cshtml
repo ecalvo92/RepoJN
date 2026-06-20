@@ -10,10 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Web - JN</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/bootstrap.css">
-    <link rel="stylesheet" href="~/css/perfect-scrollbar.css">
-    <link rel="stylesheet" href="~/css/bootstrap-icons.css">
-    <link rel="stylesheet" href="~/css/app.css">
+    <link rel="stylesheet" href="~/css/bootstrap.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/perfect-scrollbar.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/bootstrap-icons.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true">
 </head>
 
 <body>
@@ -53,33 +53,28 @@
 
                 <div class="ms-auto">
                     <div class="dropdown">
-                        <a href="#" class="dropdown-toggle d-flex align-items-center gap-2 text-decoration-none text-dark"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
-                                 style="width:36px;height:36px;min-width:36px;">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center gap-2 text-decoration-none text-dark" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:36px;height:36px;min-width:36px;">
                                 <i class="bi bi-person-fill text-white"></i>
                             </div>
                             <span class="d-none d-md-block fw-semibold">@nombre</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2"
-                                   asp-controller="Home" asp-action="Perfil">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" asp-controller="Home" asp-action="Perfil">
                                     <i class="bi bi-person-circle text-primary fs-5"></i>
                                     <span>Perfil</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2"
-                                   asp-controller="Home" asp-action="Seguridad">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" asp-controller="Home" asp-action="Seguridad">
                                     <i class="bi bi-shield-lock text-warning fs-5"></i>
                                     <span>Seguridad</span>
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2 text-danger"
-                                   asp-controller="Home" asp-action="Salir">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2 text-danger" asp-controller="Home" asp-action="Salir">
                                     <i class="bi bi-box-arrow-right fs-5"></i>
                                     <span>Salir</span>
                                 </a>
@@ -109,9 +104,9 @@
             </footer>
         </div>
     </div>
-    <script src="~/js/perfect-scrollbar.min.js"></script>
-    <script src="~/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/main.js"></script>
+    <script src="~/js/perfect-scrollbar.min.js" asp-append-version="true"></script>
+    <script src="~/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
 </body>
 
 </html>

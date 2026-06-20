@@ -10,6 +10,7 @@ namespace JN_WEB.Controllers
         IHttpClientFactory _http, 
         IConfiguration _config) : Controller
     {
+
         #region Iniciar Sesión
 
         [HttpGet]

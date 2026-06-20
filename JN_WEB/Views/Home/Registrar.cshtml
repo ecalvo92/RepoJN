@@ -19,7 +19,7 @@
 
             <h1 class="auth-title">Crear Cuenta</h1>
 
-            <form id="Registrar" asp-action="Registrar" asp-controller="Home" method="post">
+            <form id="RegistrarForm" asp-action="Registrar" asp-controller="Home" method="post">
 
                 <div class="form-group position-relative has-icon-left">
                     <input asp-for="Identificacion" type="text" class="form-control form-control-xl" placeholder="Identificación">
@@ -54,8 +54,7 @@
 
             <div class="text-center mt-5 text-lg fs-4">
                 <p class='text-gray-600'>
-                    ¿Ya tienes una cuenta? <a asp-action="Index" asp-controller="Home"
-                                            class="font-bold">
+                    ¿Ya tienes una cuenta? <a asp-action="Index" asp-controller="Home" class="font-bold">
                     Inicia Sesión
                 </a>
             </p>

@@ -24,9 +24,8 @@ namespace JN_API.Controllers
             parameters.Add("@FechaHora", DateTime.Now);
             parameters.Add("@ConsecutivoUsuario", 0);
 
-            var response = context.Execute("spRegistrarError", parameters);
+            context.Execute("spRegistrarError", parameters);
             return StatusCode(500, "Se presentó un inconveniente técnico");
         }
-
     }
 }

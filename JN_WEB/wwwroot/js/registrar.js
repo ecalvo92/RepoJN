@@ -4,7 +4,7 @@ $(function () {
     return this.optional(element) || /[!@#$%^&*(),.?":{}|<>]/.test(value);
   }, "");
 
-  $("#Registrar").validate({
+  $("#RegistrarForm").validate({
     rules: {
       Identificacion: {
         required: true
