@@ -1,42 +1,30 @@
-$(function () {
+﻿$(function () {
 
   $.validator.addMethod("caracterEspecial", function (value, element) {
     return this.optional(element) || /[!@#$%^&*(),.?":{}|<>]/.test(value);
   }, "");
 
-  $("#RegistrarForm").validate({
+  $("#SeguridadForm").validate({
     rules: {
-      Identificacion: {
-        required: true
-      },
-      Nombre: {
-        required: true
-      },
-      CorreoElectronico: {
-        required: true,
-        email: true
-      },
       Contrasenna: {
         required: true,
         minlength: 5,
         caracterEspecial: true
+      },
+      ConfirmarContrasenna: {
+        required: true,
+        equalTo: "#Contrasenna"
       }
     },
     messages: {
-      Identificacion: {
-        required: "Campo obligatorio"
-      },
-      Nombre: {
-        required: "Campo obligatorio"
-      },
-      CorreoElectronico: {
-        required: "Campo obligatorio",
-        email: "Formato no válido"
-      },
       Contrasenna: {
         required: "Campo obligatorio",
         minlength: "Mínimo 5 caracteres",
         caracterEspecial: "Al menos 1 caracter especial"
+      },
+      ConfirmarContrasenna: {
+        required: "Campo obligatorio",
+        equalTo: "Las contraseñas no coinciden"
       }
     },
     errorElement: "span",
