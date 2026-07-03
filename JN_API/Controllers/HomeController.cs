@@ -21,10 +21,9 @@ namespace JN_API.Controllers
             parameters.Add("@Nombre", model.Nombre);
             parameters.Add("@CorreoElectronico", model.CorreoElectronico);
             parameters.Add("@Contrasenna", model.Contrasenna);
-
             var response = context.Execute("spRegistrarUsuario", parameters);
 
-            if (response >= 0)
+            if (response > 0)
                 return Ok(response);
 
             return BadRequest("No se ha registrado su información, valide que no tenga una cuenta ya creada");
@@ -38,7 +37,6 @@ namespace JN_API.Controllers
             var parameters = new DynamicParameters();
             parameters.Add("@CorreoElectronico", model.CorreoElectronico);
             parameters.Add("@Contrasenna", model.Contrasenna);
-
             var response = context.QueryFirstOrDefault<UsuarioResponseModel>("spIniciarSesionUsuario", parameters);
 
             if (response != null)
@@ -47,5 +45,39 @@ namespace JN_API.Controllers
                 return NotFound("No se ha validado su información correctamente");
         }
 
+        [HttpPost("RecuperarAccesoAPI")]
+        public IActionResult RecuperarAccesoAPI(RecuperarAccesoRequestModel model) 
+        {
+            using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+            var response = context.QueryFirstOrDefault<UsuarioResponseModel>("spValidarCorreo", parameters);
+
+            if (response == null)
+                return NotFound("No se ha validado su información correctamente");
+
+            //2. Generar una contraseña temporal
+            var temporal = GenerarContrasena();
+
+            parameters = new DynamicParameters();
+            parameters.Add("@Consecutivo", response.Consecutivo);
+            parameters.Add("@Contrasenna", temporal);
+            var update = context.Execute("spActualizarContrasenna", parameters);
+
+            if (update > 0)
+            {
+                //3. Enviar la contraseña temporal al correo electrónico del usuario
+
+                return Ok(response);
+            }
+
+            return BadRequest("No se ha recuperado su acceso, intente nuevamente más tarde");
+        }
+
+        private string GenerarContrasena()
+        {
+            return Guid.NewGuid().ToString("N")[..10];
+        }
     }
 }
