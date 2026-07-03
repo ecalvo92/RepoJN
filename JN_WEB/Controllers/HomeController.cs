@@ -32,6 +32,9 @@ namespace JN_WEB.Controllers
 
                 HttpContext.Session.SetString("Autenticado", "1");
                 HttpContext.Session.SetString("Nombre", datos!.Nombre);
+                
+                if(datos!.UsaContrasennaTemp)
+                    return RedirectToAction("Seguridad", "Usuario");
 
                 return RedirectToAction("Principal", "Home");
             }
