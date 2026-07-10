@@ -3,6 +3,7 @@ using JN_API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace JN_API.Controllers
 {
@@ -10,13 +11,29 @@ namespace JN_API.Controllers
     [ApiController]
     public class UsuarioController(IConfiguration _config) : ControllerBase
     {
+        [HttpGet("ConsultarUsuarioAPI")]
+        public IActionResult ConsultarUsuarioAPI(int consecutivo)
+        {
+            using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Consecutivo", consecutivo);
+            var response = context.QueryFirstOrDefault<UsuarioResponseModel>("spConsultarUsuario", parameters);
+
+            if (response != null)
+            {
+                return Ok(response);
+            }
+
+            return NotFound("No se ha encontrado el usuario");
+        }
+
         [HttpPut("CambiarContrasennaAPI")]
         public IActionResult CambiarContrasennaAPI(CambiarContrasennaRequestModel model)
         {
             using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
 
             var parameters = new DynamicParameters();
-            parameters = new DynamicParameters();
             parameters.Add("@Consecutivo", model.Consecutivo);
             parameters.Add("@Contrasenna", model.Contrasenna);
             parameters.Add("@IndicadorTemp", false);
@@ -24,12 +41,30 @@ namespace JN_API.Controllers
 
             if (response > 0)
             {
-                //3. Enviar un correo electrónico al usuario
-
-                return Ok(response);
+                return Ok("La información se ha actualizado correctamente");
             }
 
             return BadRequest("No se ha actualizado su contraseña");
+        }
+
+        [HttpPut("CambiarPerfilAPI")]
+        public IActionResult CambiarPerfilAPI(CambiarPerfilRequestModel model)
+        {
+            using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Consecutivo", model.Consecutivo);
+            parameters.Add("@Identificacion", model.Identificacion);
+            parameters.Add("@Nombre", model.Nombre);
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+            var response = context.Execute("spActualizarPerfil", parameters);
+
+            if (response > 0)
+            {
+                return Ok("La información se ha actualizado correctamente");
+            }
+
+            return BadRequest("No se ha actualizado su perfil");
         }
 
     }
