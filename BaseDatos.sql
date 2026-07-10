@@ -49,7 +49,7 @@ INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElec
 GO
 INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [UsaContrasennaTemp]) VALUES (5, N'118440532', N'JIMENEZ RIVERA DANIEL GUILLERMO', N'djimenez40532@ufide.ac.cr', N'2234c807c4', 1, 1)
 GO
-INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [UsaContrasennaTemp]) VALUES (6, N'119390692', N'GOMEZ TORRES KENNETH', N'kgomez90692@ufide.ac.cr', N'90692*', 1, 0)
+INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [UsaContrasennaTemp]) VALUES (6, N'119390692', N'KENNETH GOMEZ T', N'kgomez90692@ufide.ac.cr', N'12345*', 1, 0)
 GO
 SET IDENTITY_INSERT [dbo].[tbUsuario] OFF
 GO
@@ -77,6 +77,35 @@ BEGIN
        SET  Contrasenna = @Contrasenna,
             UsaContrasennaTemp = @IndicadorTemp
      WHERE  Consecutivo = @Consecutivo
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[spActualizarPerfil]
+    @Consecutivo        int,
+    @Identificacion     varchar(15),
+    @Nombre             varchar(250),
+    @CorreoElectronico  varchar(100)
+AS
+BEGIN
+
+    UPDATE  dbo.tbUsuario
+       SET  Identificacion = @Identificacion,
+            Nombre = @Nombre,
+            CorreoElectronico = @CorreoElectronico
+     WHERE  Consecutivo = @Consecutivo
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[spConsultarUsuario]
+    @Consecutivo  int
+AS
+BEGIN
+
+    SELECT  Consecutivo,Identificacion,Nombre,CorreoElectronico,Estado,UsaContrasennaTemp
+    FROM    dbo.tbUsuario
+    WHERE   Consecutivo = @Consecutivo
 
 END
 GO
@@ -139,7 +168,7 @@ CREATE PROCEDURE [dbo].[spValidarCorreo]
 AS
 BEGIN
 
-    SELECT  Consecutivo,Identificacion,Nombre,CorreoElectronico,Estado
+    SELECT  Consecutivo,Identificacion,Nombre,CorreoElectronico,Estado,UsaContrasennaTemp
     FROM    dbo.tbUsuario
     WHERE   CorreoElectronico = @CorreoElectronico
         AND Estado = 1
