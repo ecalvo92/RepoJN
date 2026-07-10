@@ -2,17 +2,14 @@
 using JN_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using MimeKit;
-using MailKit.Security;
-using MailKit.Net.Smtp;
+using JN_API.Services;
 
 namespace JN_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController(IConfiguration _config) : ControllerBase
+    public class HomeController(IConfiguration _config, IUtilesService _utiles) : ControllerBase
     {
-
         [HttpPost("RegistrarAPI")]
         public IActionResult RegistrarAPI(RegistroUsuarioRequestModel model)
         {
@@ -60,7 +57,7 @@ namespace JN_API.Controllers
                 return NotFound("No se ha validado su información correctamente");
 
             //2. Generar una contraseña temporal
-            var temporal = GenerarContrasena();
+            var temporal = _utiles.GenerarContrasena();
 
             parameters = new DynamicParameters();
             parameters.Add("@Consecutivo", response.Consecutivo);
@@ -77,45 +74,11 @@ namespace JN_API.Controllers
                 plantilla = plantilla.Replace("{{TEMPORAL}}", temporal);
                 plantilla = plantilla.Replace("{{NOMBRE}}", response.Nombre);
 
-                await EnviarCorreoAsync(model.CorreoElectronico, "Recuperación de acceso", plantilla);
+                await _utiles.EnviarCorreoAsync(model.CorreoElectronico, "Recuperación de acceso", plantilla);
                 return Ok(response);
             }
 
             return BadRequest("No se ha recuperado su acceso, intente nuevamente más tarde");
-        }
-
-        private static string GenerarContrasena()
-        {
-            return Guid.NewGuid().ToString("N")[..10];
-        }
-
-        public async Task EnviarCorreoAsync(string destinatario, string asunto, string cuerpoHtml)
-        {
-            var mensaje = new MimeMessage();
-            var cuentaGmail = _config["Correos:CuentaGmail"]!;
-            var contrasenaAplicacion = _config["Correos:ContrasenaAplicacion"]!;
-
-            mensaje.From.Add(new MailboxAddress(string.Empty, cuentaGmail));
-            mensaje.To.Add(MailboxAddress.Parse(destinatario));
-            mensaje.Subject = asunto;
-
-            mensaje.Body = new TextPart("html")
-            {
-                Text = cuerpoHtml
-            };
-
-            using var cliente = new SmtpClient();
-
-            try
-            {
-                await cliente.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                await cliente.AuthenticateAsync(cuentaGmail, contrasenaAplicacion);
-                await cliente.SendAsync(mensaje);
-            }
-            finally
-            {
-                await cliente.DisconnectAsync(true);
-            }
         }
     }
 }

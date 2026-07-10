@@ -1,8 +1,10 @@
+using JN_API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<IUtilesService, UtilesService>();
 
 var app = builder.Build();
 
