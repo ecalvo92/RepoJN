@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using JN_API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using JN_API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace JN_API.Controllers
 {
@@ -43,14 +43,14 @@ namespace JN_API.Controllers
             if (response != null && BCrypt.Net.BCrypt.Verify(model.Contrasenna, response.Contrasenna))
             {
                 response.Token = _utiles.GenerarToken(response.Consecutivo);
-                return Ok(response);            
+                return Ok(response);
             }
             else
                 return NotFound("No se ha validado su información correctamente");
         }
 
         [HttpPost("RecuperarAccesoAPI")]
-        public async Task<IActionResult> RecuperarAccesoAPI(RecuperarAccesoRequestModel model) 
+        public async Task<IActionResult> RecuperarAccesoAPI(RecuperarAccesoRequestModel model)
         {
             using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
 

@@ -3,7 +3,6 @@ using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Headers;
-using static System.Net.WebRequestMethods;
 
 namespace JN_WEB.Controllers
 {
@@ -32,7 +31,7 @@ namespace JN_WEB.Controllers
 
                 return View("Configuracion", datos);
             }
-            else if(response.StatusCode == HttpStatusCode.Unauthorized)
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return RedirectToAction("Salir", "Home");
             }
@@ -41,7 +40,7 @@ namespace JN_WEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult CambiarContrasenna(UsuarioModel model) 
+        public IActionResult CambiarContrasenna(UsuarioModel model)
         {
             model.Consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
 

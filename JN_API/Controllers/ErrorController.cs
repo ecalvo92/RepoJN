@@ -1,10 +1,8 @@
 ﻿using Dapper;
 using JN_API.Services;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Security.Claims;
 
 namespace JN_API.Controllers
 {

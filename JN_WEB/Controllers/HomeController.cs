@@ -1,14 +1,12 @@
 using JN_WEB.Filter;
 using JN_WEB.Models;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Text.Json;
 
 namespace JN_WEB.Controllers
 {
     public class HomeController(
-        IHttpClientFactory _http, 
+        IHttpClientFactory _http,
         IConfiguration _config) : Controller
     {
 
@@ -41,7 +39,7 @@ namespace JN_WEB.Controllers
 
                 return RedirectToAction("Principal", "Home");
             }
-            else if(response.StatusCode == HttpStatusCode.NotFound)
+            else if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Mensaje = response.Content.ReadAsStringAsync().Result;
                 return View();
@@ -103,7 +101,7 @@ namespace JN_WEB.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            else if (response.StatusCode == HttpStatusCode.BadRequest 
+            else if (response.StatusCode == HttpStatusCode.BadRequest
                   || response.StatusCode == HttpStatusCode.NotFound)
             {
                 ViewBag.Mensaje = response.Content.ReadAsStringAsync().Result;

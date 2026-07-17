@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace JN_API.Models
+﻿namespace JN_API.Models
 {
     public class UsuarioResponseModel
     {
