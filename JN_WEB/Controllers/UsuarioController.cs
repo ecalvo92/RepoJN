@@ -2,6 +2,7 @@
 using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Http.Headers;
 using static System.Net.WebRequestMethods;
 
 namespace JN_WEB.Controllers
@@ -20,6 +21,8 @@ namespace JN_WEB.Controllers
             var consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
 
             using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
             var url = _config["Valores:UrlApi"] + "Usuario/ConsultarUsuarioAPI?consecutivo=" + consecutivo;
             var response = client.GetAsync(url).Result;
 
@@ -28,6 +31,10 @@ namespace JN_WEB.Controllers
                 var datos = response.Content.ReadFromJsonAsync<UsuarioModel>().Result;
 
                 return View("Configuracion", datos);
+            }
+            else if(response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Salir", "Home");
             }
 
             throw new Exception("Error al cambiar la contraseña");
@@ -39,6 +46,8 @@ namespace JN_WEB.Controllers
             model.Consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
 
             using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
             var url = _config["Valores:UrlApi"] + "Usuario/CambiarContrasennaAPI";
             var response = client.PutAsJsonAsync(url, model).Result;
 
@@ -51,6 +60,10 @@ namespace JN_WEB.Controllers
                 ViewBag.MensajeSeguridad = response.Content.ReadAsStringAsync().Result;
                 return View("Configuracion", model);
             }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Salir", "Home");
+            }
 
             throw new Exception("Error al cambiar la contraseña");
         }
@@ -61,6 +74,8 @@ namespace JN_WEB.Controllers
             model.Consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
 
             using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
             var url = _config["Valores:UrlApi"] + "Usuario/CambiarPerfilAPI";
             var response = client.PutAsJsonAsync(url, model).Result;
 
@@ -70,6 +85,10 @@ namespace JN_WEB.Controllers
 
                 ViewBag.MensajePerfil = response.Content.ReadAsStringAsync().Result;
                 return View("Configuracion", model);
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Salir", "Home");
             }
 
             throw new Exception("Error al cambiar la contraseña");

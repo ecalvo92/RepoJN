@@ -1,15 +1,17 @@
 ﻿using Dapper;
+using JN_API.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Security.Claims;
 
 namespace JN_API.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
-    public class ErrorController(IConfiguration _config) : ControllerBase
+    public class ErrorController(IConfiguration _config, IUtilesService _utiles) : ControllerBase
     {
         [Route("RegistrarError")]
         public IActionResult RegistrarError()
@@ -22,7 +24,7 @@ namespace JN_API.Controllers
             parameters.Add("@Mensaje", ex?.Error.Message);
             parameters.Add("@Lugar", ex?.Path);
             parameters.Add("@FechaHora", DateTime.Now);
-            parameters.Add("@ConsecutivoUsuario", 0);
+            parameters.Add("@ConsecutivoUsuario", _utiles.ObtenerConsecutivoToken());
 
             context.Execute("spRegistrarError", parameters);
             return StatusCode(500, "Se presentó un inconveniente técnico");

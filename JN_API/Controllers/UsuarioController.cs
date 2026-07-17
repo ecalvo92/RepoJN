@@ -1,12 +1,13 @@
 ﻿using Dapper;
 using JN_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace JN_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController(IConfiguration _config) : ControllerBase

@@ -3,9 +3,11 @@ using JN_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using JN_API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JN_API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController(IConfiguration _config, IUtilesService _utiles) : ControllerBase
