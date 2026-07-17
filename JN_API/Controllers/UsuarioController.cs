@@ -31,6 +31,8 @@ namespace JN_API.Controllers
         [HttpPut("CambiarContrasennaAPI")]
         public IActionResult CambiarContrasennaAPI(CambiarContrasennaRequestModel model)
         {
+            model.Contrasenna = BCrypt.Net.BCrypt.HashPassword(model.Contrasenna);
+
             using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
 
             var parameters = new DynamicParameters();

@@ -61,6 +61,8 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult Registrar(UsuarioModel model)
         {
+            model.Contrasenna = BCrypt.Net.BCrypt.HashPassword(model.Contrasenna);
+
             using var client = _http.CreateClient();
             var url = _config["Valores:UrlApi"] + "Home/RegistrarAPI";
             var response = client.PostAsJsonAsync(url, model).Result;
