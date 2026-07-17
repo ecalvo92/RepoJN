@@ -1,10 +1,12 @@
-﻿using JN_WEB.Models;
+﻿using JN_WEB.Filter;
+using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using static System.Net.WebRequestMethods;
 
 namespace JN_WEB.Controllers
 {
+    [SesionActivaAttribute]
     public class UsuarioController(
         IHttpClientFactory _http,
         IConfiguration _config) : Controller

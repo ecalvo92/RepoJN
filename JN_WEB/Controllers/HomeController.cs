@@ -1,3 +1,4 @@
+using JN_WEB.Filter;
 using JN_WEB.Models;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Mvc;
@@ -115,6 +116,7 @@ namespace JN_WEB.Controllers
 
         #region Cerrar Sesión
 
+        [SesionActivaAttribute]
         [HttpGet]
         public IActionResult Salir()
         {
@@ -124,6 +126,7 @@ namespace JN_WEB.Controllers
 
         #endregion
 
+        [SesionActivaAttribute]
         [HttpGet]
         public IActionResult Principal()
         {
