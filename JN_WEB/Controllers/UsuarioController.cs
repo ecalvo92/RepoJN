@@ -17,18 +17,15 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult Configuracion()
         {
-            var consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
-
             using var client = _http.CreateClient();
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
             var url = _config["Valores:UrlApi"] + "Usuario/ConsultarUsuarioAPI";
             var response = client.GetAsync(url).Result;
 
-            if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.OK)
             {
                 var datos = response.Content.ReadFromJsonAsync<UsuarioModel>().Result;
-
                 return View("Configuracion", datos);
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -36,7 +33,7 @@ namespace JN_WEB.Controllers
                 return RedirectToAction("Salir", "Home");
             }
 
-            throw new Exception("Error al cambiar la contraseña");
+            throw new Exception("Error al consultar el usuario");
         }
 
         [HttpPost]
@@ -86,7 +83,7 @@ namespace JN_WEB.Controllers
                 return RedirectToAction("Salir", "Home");
             }
 
-            throw new Exception("Error al cambiar la contraseña");
+            throw new Exception("Error al cambiar el perfil");
         }
 
         #endregion

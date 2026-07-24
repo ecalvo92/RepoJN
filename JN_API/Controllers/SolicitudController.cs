@@ -23,7 +23,6 @@ namespace JN_API.Controllers
             parameters.Add("@Titulo", model.Titulo);
             parameters.Add("@Descripcion", model.Descripcion);
             parameters.Add("@ConsecutivoUsuario", _utiles.ObtenerConsecutivoToken());
-            parameters.Add("@ConsecutivoAdmin", model.ConsecutivoAdmin);
             var response = context.Execute("spRegistrarSolicitud", parameters);
 
             if (response > 0)
@@ -32,6 +31,61 @@ namespace JN_API.Controllers
             }
 
             return BadRequest("No se ha podido registrar la solicitud");
+        }
+
+
+        [HttpGet("ConsultarSolicitudesUsuarioAPI")]
+        public IActionResult ConsultarSolicitudesUsuarioAPI()
+        {
+            using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@ConsecutivoUsuario", _utiles.ObtenerConsecutivoToken());
+            var response = context.Query<SolicitudResponseModel>("spConsultarSolicitudesUsuario", parameters);
+
+            if (response.Any())
+            {
+                return Ok(response);
+            }
+
+            return NotFound("No se han encontrado solicitudes");
+        }
+
+
+        [HttpGet("ConsultarSolicitudAPI")]
+        public IActionResult ConsultarSolicitudAPI(int consecutivoSolicitud)
+        {
+            using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@ConsecutivoSolicitud", consecutivoSolicitud);
+            var response = context.QueryFirstOrDefault<SolicitudResponseModel>("spConsultarSolicitud", parameters);
+
+            if (response != null)
+            {
+                return Ok(response);
+            }
+
+            return NotFound("No se ha encontrado la solicitud");
+        }
+
+
+        [HttpDelete("CancelarSolicitudUsuarioAPI")]
+        public IActionResult CancelarSolicitudUsuarioAPI(int consecutivoSolicitud)
+        {
+            using var context = new SqlConnection(_config["ConnectionStrings:DefaultConnection"]);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@ConsecutivoSolicitud", consecutivoSolicitud);
+            parameters.Add("@ConsecutivoUsuario", _utiles.ObtenerConsecutivoToken());
+            var response = context.Execute("spCancelarSolicitudUsuario", parameters);
+
+            if (response > 0)
+            {
+                return Ok("La solicitud se ha cancelado correctamente");
+            }
+
+            return BadRequest("No se ha podido cancelar la solicitud");
         }
 
     }
