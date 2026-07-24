@@ -22,7 +22,7 @@ namespace JN_WEB.Controllers
             using var client = _http.CreateClient();
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-            var url = _config["Valores:UrlApi"] + "Usuario/ConsultarUsuarioAPI?consecutivo=" + consecutivo;
+            var url = _config["Valores:UrlApi"] + "Usuario/ConsultarUsuarioAPI";
             var response = client.GetAsync(url).Result;
 
             if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NotFound)
@@ -42,8 +42,6 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult CambiarContrasenna(UsuarioModel model)
         {
-            model.Consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
-
             using var client = _http.CreateClient();
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
@@ -70,8 +68,6 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult CambiarPerfil(UsuarioModel model)
         {
-            model.Consecutivo = HttpContext.Session.GetInt32("Consecutivo")!.Value;
-
             using var client = _http.CreateClient();
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
