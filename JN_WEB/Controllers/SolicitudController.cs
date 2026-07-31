@@ -58,6 +58,10 @@ namespace JN_WEB.Controllers
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
+                var consecutivoSolicitud = response.Content.ReadFromJsonAsync<int>().Result;
+
+                GuardarPDF(Imagen, consecutivoSolicitud);
+
                 return RedirectToAction("Bandeja", "Solicitud");
             }
             else if (response.StatusCode == HttpStatusCode.BadRequest)
@@ -81,6 +85,18 @@ namespace JN_WEB.Controllers
             var response = client.DeleteAsync(url).Result;
 
             return Json(response.Content.ReadAsStringAsync().Result);
+        }
+
+
+        private static void GuardarPDF(IFormFile ArchivoPDF, int Consecutivo)
+        {
+            var carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs");
+            Directory.CreateDirectory(carpeta);
+
+            var ruta = Path.Combine(carpeta, $"{Consecutivo}.pdf");
+
+            using var stream = new FileStream(ruta, FileMode.Create);
+            ArchivoPDF.CopyTo(stream);
         }
 
     }
