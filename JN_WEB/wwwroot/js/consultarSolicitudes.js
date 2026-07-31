@@ -9,3 +9,45 @@
   });
 
 });
+
+$(document).on("click", ".btn-cancelar", function () {
+
+  var consecutivo = $(this).data("consecutivo");
+  var titulo = $(this).data("titulo");
+
+  swal.fire({
+    text: "¿Desea cancelar la solicitud " + titulo,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Sí",
+    cancelButtonText: "No"
+  }).then(function (result) {
+
+    if (!result.isConfirmed)
+      return;
+
+    $.ajax({
+      url: "/Solicitud/CancelarSolicitud",
+      method: "POST",
+      data: {
+        consecutivo: consecutivo
+      },
+      dataType: "json",
+      success: function (data) {
+
+        Swal.fire({
+          title: 'Información',
+          text: data,
+          icon: 'info',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          location.reload();
+        });
+
+      }
+
+    })  
+
+  });
+
+});

@@ -39,5 +39,49 @@ namespace JN_WEB.Controllers
             throw new Exception("Error al consultar las solicitudes");
         }
 
+        #region Registrar Solicitud
+
+        [HttpGet]
+        public IActionResult AgregarSolicitud()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AgregarSolicitud(SolicitudModel model, IFormFile Imagen)
+        {
+            using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var url = _config["Valores:UrlApi"] + "Solicitud/RegistrarSolicitudAPI";
+            var response = client.PostAsJsonAsync(url, model).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return RedirectToAction("Bandeja", "Solicitud");
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                ViewBag.Mensaje = response.Content.ReadAsStringAsync().Result;
+                return View();
+            }
+
+            throw new Exception("Error al registrar la solicitud");
+        }
+
+        #endregion
+
+        [HttpPost]
+        public IActionResult CancelarSolicitud(int consecutivo)
+        {
+            using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var url = _config["Valores:UrlApi"] + "Solicitud/CancelarSolicitudUsuarioAPI?consecutivoSolicitud=" + consecutivo;
+            var response = client.DeleteAsync(url).Result;
+
+            return Json(response.Content.ReadAsStringAsync().Result);
+        }
+
     }
 }
