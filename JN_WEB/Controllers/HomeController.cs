@@ -132,6 +132,11 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult Principal()
         {
+            if (HttpContext.Session.GetInt32("ConsecutivoRol") == 1)
+            {
+                return RedirectToAction("VerEstadoSolicitud", "Solicitud");
+            }
+
             using var client = _http.CreateClient();
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
