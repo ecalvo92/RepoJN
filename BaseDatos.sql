@@ -49,6 +49,7 @@ CREATE TABLE [dbo].[tbSolicitud](
 	[ConsecutivoUsuario] [int] NOT NULL,
 	[ConsecutivoAdmin] [int] NOT NULL,
 	[ConsecutivoEstado] [int] NOT NULL,
+	[Solucion] [varchar](max) NULL,
  CONSTRAINT [PK_tbSolicitud] PRIMARY KEY CLUSTERED 
 (
 	[Consecutivo] ASC
@@ -102,23 +103,7 @@ GO
 
 SET IDENTITY_INSERT [dbo].[tbSolicitud] ON 
 GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (1, N'No me sirve el facebook', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:43:46.077' AS DateTime), NULL, 8, 7, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (2, N'No me sirve el internet', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:46:01.533' AS DateTime), NULL, 8, 7, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (3, N'No me sirve el formulario 1', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:48:29.243' AS DateTime), CAST(N'2026-07-23T20:52:02.780' AS DateTime), 8, 9, 3)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (4, N'No me sirve el formulario 2', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:48:52.320' AS DateTime), NULL, 8, 10, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (5, N'No me sirve el formulario 3', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:49:06.877' AS DateTime), NULL, 8, 9, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (6, N'No me sirve el formulario 4', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:49:19.230' AS DateTime), NULL, 8, 10, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (7, N'No me sirve el formulario FINAL KO', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:49:42.080' AS DateTime), NULL, 8, 9, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (8, N'No me sirve el formulario FINAL KO este si', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:49:56.780' AS DateTime), NULL, 8, 7, 1)
-GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado]) VALUES (9, N'No me sirve el formulario FINAL KO este si FINAL FINAL', N'Cuando entro a internet me sale un dinosaurio raro', CAST(N'2026-07-23T20:50:17.360' AS DateTime), NULL, 8, 10, 1)
+INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado], [Solucion]) VALUES (11, N'Problema detectado con SQL Server', N'Se detecta lentitud en el servidor SQL que afecta la ejecución de consultas y procesos críticos. Se presentan tiempos de respuesta elevados, impactando el rendimiento de la aplicación y la experiencia de los usuarios finales.', CAST(N'2026-07-30T20:20:27.157' AS DateTime), NULL, 8, 9, 1, NULL)
 GO
 SET IDENTITY_INSERT [dbo].[tbSolicitud] OFF
 GO
@@ -212,7 +197,8 @@ BEGIN
 
     UPDATE  dbo.tbSolicitud
     SET     ConsecutivoEstado = 3,
-            FechaFinalizacion = GETDATE()
+            FechaFinalizacion = GETDATE(),
+            Solucion          = 'Solicitud cancelada por el usuario'
     WHERE   Consecutivo         = @ConsecutivoSolicitud
         AND ConsecutivoUsuario  = @ConsecutivoUsuario
         AND ConsecutivoEstado   = 1
@@ -236,6 +222,26 @@ BEGIN
     INNER JOIN dbo.tbUsuario U ON S.ConsecutivoAdmin = U.Consecutivo
     INNER JOIN dbo.tbEstado E ON S.ConsecutivoEstado = E.Consecutivo
     WHERE   S.Consecutivo = @ConsecutivoSolicitud
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[spConsultarSolicitudesAdmin]
+    @ConsecutivoAdmin  int
+AS
+BEGIN
+
+    SELECT  S.Consecutivo,
+            S.Titulo,
+            S.Descripcion,
+            S.FechaRegistro,
+            S.FechaFinalizacion,
+            U.Nombre 'NombreUsuario',
+            E.Nombre 'NombreEstado'
+    FROM    dbo.tbSolicitud S
+    INNER JOIN dbo.tbUsuario U ON S.ConsecutivoUsuario = U.Consecutivo
+    INNER JOIN dbo.tbEstado E ON S.ConsecutivoEstado = E.Consecutivo
+    WHERE   S.ConsecutivoAdmin = @ConsecutivoAdmin
 
 END
 GO
@@ -323,8 +329,11 @@ BEGIN
 
 
     INSERT INTO dbo.tbSolicitud(Titulo,Descripcion,FechaRegistro,FechaFinalizacion,
-                                ConsecutivoUsuario,ConsecutivoAdmin,ConsecutivoEstado)
-    VALUES (@Titulo,@Descripcion,GETDATE(),NULL,@ConsecutivoUsuario,@ConsecutivoAdmin,1)
+                                ConsecutivoUsuario,ConsecutivoAdmin,ConsecutivoEstado,Solucion)
+    VALUES (@Titulo,@Descripcion,GETDATE(),NULL,@ConsecutivoUsuario,@ConsecutivoAdmin,1,NULL)
+
+
+    SELECT SCOPE_IDENTITY() AS 'Consecutivo'
 
 END
 GO
