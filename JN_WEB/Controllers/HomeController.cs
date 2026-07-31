@@ -2,6 +2,7 @@ using JN_WEB.Filter;
 using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Http.Headers;
 
 namespace JN_WEB.Controllers
 {
@@ -131,7 +132,27 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult Principal()
         {
-            return View();
+            using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var url = _config["Valores:UrlApi"] + "Solicitud/ConsultarSolicitudesAdminAPI";
+            var response = client.GetAsync(url).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var datos = response.Content.ReadFromJsonAsync<List<SolicitudModel>>().Result;
+                return View(datos);
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return View(new List<SolicitudModel>());
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Salir", "Home");
+            }
+
+            throw new Exception("Error al consultar las solicitudes");
         }
 
     }
