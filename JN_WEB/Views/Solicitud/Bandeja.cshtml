@@ -46,8 +46,7 @@
                 <td>@item.NombreEstado</td>
                 
                <td>
-                  <a class="@(item.NombreEstado == "Abierto" ? "btn-cancelar" : "")"
-                     style="cursor:@(item.NombreEstado == "Abierto" ? "pointer" : "not-allowed")"
+                  <a class="@(item.NombreEstado == "Abierto" ? "btn-cancelar cursor-pointer" : "cursor-not-allowed")"
                      data-consecutivo="@item.Consecutivo"
                      data-titulo="@item.Titulo">
                       <i class="bi bi-trash fs-4"></i>
