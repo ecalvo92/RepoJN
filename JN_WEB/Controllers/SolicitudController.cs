@@ -69,6 +69,10 @@ namespace JN_WEB.Controllers
                 ViewBag.Mensaje = response.Content.ReadAsStringAsync().Result;
                 return View();
             }
+			else if (response.StatusCode == HttpStatusCode.Unauthorized)
+			{
+				return RedirectToAction("Salir", "Home");
+			}
 
             throw new Exception("Error al registrar la solicitud");
         }

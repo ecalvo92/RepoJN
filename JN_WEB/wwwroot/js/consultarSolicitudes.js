@@ -16,7 +16,7 @@ $(document).on("click", ".btn-cancelar", function () {
   var titulo = $(this).data("titulo");
 
   swal.fire({
-    text: "¿Desea cancelar la solicitud " + titulo,
+    text: "¿Desea cancelar la solicitud " + titulo + "?",
     icon: "question",
     showCancelButton: true,
     confirmButtonText: "Sí",
