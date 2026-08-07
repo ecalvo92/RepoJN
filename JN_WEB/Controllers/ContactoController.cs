@@ -24,6 +24,8 @@ namespace JN_WEB.Controllers
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
                 return RedirectToAction("Salir", "Home");
 
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+            ViewBag.UrlHub = _config["Valores:UrlHub"];
             ViewBag.ConsecutivoUsuario = HttpContext.Session.GetInt32("Consecutivo");
             return View(solicitudes);
         }

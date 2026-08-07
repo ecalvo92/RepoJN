@@ -14,8 +14,11 @@ builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
+    var origins = builder.Configuration["Cors:Origins"]!
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
     options.AddPolicy("ChatPolicy", policy =>
-        policy.WithOrigins("https://localhost:7011", "http://localhost:5125")
+        policy.WithOrigins(origins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials());
