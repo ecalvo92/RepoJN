@@ -42,7 +42,7 @@ namespace JN_API.Controllers
 
             if (response != null && BCrypt.Net.BCrypt.Verify(model.Contrasenna, response.Contrasenna))
             {
-                response.Token = _utiles.GenerarToken(response.Consecutivo);
+                response.Token = _utiles.GenerarToken(response.Consecutivo, response.ConsecutivoRol, response.Nombre);
                 return Ok(response);
             }
             else

@@ -45,7 +45,7 @@ namespace JN_API.Services
             }
         }
 
-        public string GenerarToken(int consecutivo)
+        public string GenerarToken(int consecutivo, int consecutivoRol, string nombre)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = System.Text.Encoding.ASCII.GetBytes(_config["Jwt:SecretKey"]!);
@@ -53,7 +53,9 @@ namespace JN_API.Services
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new[]
                 {
-                    new System.Security.Claims.Claim("consecutivo", consecutivo.ToString())
+                    new System.Security.Claims.Claim("consecutivo", consecutivo.ToString()),
+                    new System.Security.Claims.Claim("consecutivoRol", consecutivoRol.ToString()),
+                    new System.Security.Claims.Claim("nombre", nombre)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
@@ -68,6 +70,17 @@ namespace JN_API.Services
         {
             var valor = _httpContext.HttpContext?.User.FindFirstValue("consecutivo");
             return int.TryParse(valor, out var id) ? id : 0;
+        }
+
+        public int ObtenerConsecutivoRolToken()
+        {
+            var valor = _httpContext.HttpContext?.User.FindFirstValue("consecutivoRol");
+            return int.TryParse(valor, out var id) ? id : 0;
+        }
+
+        public string ObtenerNombreToken()
+        {
+            return _httpContext.HttpContext?.User.FindFirstValue("nombre") ?? string.Empty;
         }
 
     }
