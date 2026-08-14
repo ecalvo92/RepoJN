@@ -93,6 +93,18 @@ namespace JN_WEB.Controllers
             return Json(response.Content.ReadAsStringAsync().Result);
         }
 
+        [HttpPost]
+        public IActionResult AtenderSolicitud(int consecutivo, string solucion)
+        {
+            using var client = _http.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var url = _config["Valores:UrlApi"] + "Solicitud/AtenderSolicitudAPI";
+            var response = client.PutAsJsonAsync(url, new { ConsecutivoSolicitud = consecutivo, Solucion = solucion }).Result;
+
+            return Json(response.Content.ReadAsStringAsync().Result);
+        }
+
         private static void GuardarPDF(IFormFile ArchivoPDF, int Consecutivo, string carpeta)
         {
             Directory.CreateDirectory(carpeta);

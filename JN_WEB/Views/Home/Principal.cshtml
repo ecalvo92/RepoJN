@@ -34,10 +34,18 @@ else
               <li><i class="bi bi-calendar me-1"></i>Registro: @s.FechaRegistro.ToString("dd/MM/yyyy")</li>
             </ul>
           </div>
-          <div class="card-footer">
-            <a asp-action="Chat" asp-controller="Contacto" class="btn btn-sm btn-outline-primary w-100">
-              <i class="bi bi-chat me-1"></i>Atender
+          <div class="card-footer @(consecutivoRol == 2 ? "d-flex gap-2" : "")">
+            <a asp-action="Chat" asp-controller="Contacto" class="btn btn-sm btn-outline-primary @(consecutivoRol == 2 ? "flex-grow-1" : "w-100")">
+              <i class="bi bi-chat me-1"></i>Chat
             </a>
+            @if (consecutivoRol == 2)
+            {
+              <button class="btn btn-sm btn-success flex-grow-1 btn-atender"
+                      data-consecutivo="@s.Consecutivo"
+                      data-titulo="@s.Titulo">
+                <i class="bi bi-check2-circle me-1"></i>Resolver
+              </button>
+            }
           </div>
         </div>
       </div>
@@ -87,4 +95,9 @@ else
       </div>
     }
   </div>
+}
+
+@if (consecutivoRol == 2)
+{
+  <script src="~/js/principal-soporte.js" asp-append-version="true"></script>
 }
