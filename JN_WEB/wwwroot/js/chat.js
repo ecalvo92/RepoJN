@@ -1,6 +1,10 @@
 let connection = null;
 let salaActual = null;
 
+// Clear the sidebar notification badge when the chat page is open
+sessionStorage.removeItem('contactoBadge');
+(function () { const b = document.getElementById('badgeContacto'); if (b) b.style.display = 'none'; })();
+
 // ─── Conexión SignalR ──────────────────────────────────────────────────────────
 
 function crearConexion() {
