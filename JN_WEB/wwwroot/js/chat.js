@@ -52,6 +52,7 @@ async function abrirSala(consecutivoSolicitud, nombreInterlocutor) {
   document.getElementById('inputMensaje').disabled = false;
   document.getElementById('inputMensaje').placeholder = 'Escribe un mensaje…';
   document.getElementById('btnEnviar').disabled = false;
+  document.getElementById('btnEmoji').disabled = false;
   document.getElementById('chatNombreInterlocutor').textContent = nombreInterlocutor;
   document.getElementById('chatEstadoConexion').textContent = 'Conectando…';
   document.getElementById('chatEstadoConexion').className = 'text-warning';
@@ -85,6 +86,29 @@ async function cargarHistorial(consecutivoSolicitud) {
   mensajes.forEach(m => agregarMensaje(m, false));
   scrollAbajo();
 }
+
+// ─── Emoji picker ────────────────────────────────────────────────────────────
+
+const picker = document.getElementById('emojiPicker');
+
+document.getElementById('btnEmoji').addEventListener('click', () => {
+  picker.classList.toggle('d-none');
+});
+
+picker.addEventListener('emoji-click', (e) => {
+  const emoji = e.detail.unicode;
+  const input = document.getElementById('inputMensaje');
+  const pos   = input.selectionStart ?? input.value.length;
+  input.value = input.value.slice(0, pos) + emoji + input.value.slice(pos);
+  input.setSelectionRange(pos + emoji.length, pos + emoji.length);
+  input.focus();
+  picker.classList.add('d-none');
+});
+
+document.addEventListener('click', (e) => {
+  if (!picker.contains(e.target) && e.target.id !== 'btnEmoji')
+    picker.classList.add('d-none');
+});
 
 // ─── Envío de mensajes ────────────────────────────────────────────────────────
 
