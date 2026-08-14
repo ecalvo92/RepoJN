@@ -132,15 +132,16 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult Principal()
         {
-            if (HttpContext.Session.GetInt32("ConsecutivoRol") == 1)
-            {
-                return RedirectToAction("VerEstadoSolicitud", "Solicitud");
-            }
-
             using var client = _http.CreateClient();
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-            var url = _config["Valores:UrlApi"] + "Solicitud/ConsultarSolicitudesAdminAPI";
+            var url = string.Empty;
+
+            if (HttpContext.Session.GetInt32("ConsecutivoRol") == 1)
+                url = _config["Valores:UrlApi"] + "Solicitud/ConsultarSolicitudesUsuarioAPI";
+            else
+                url = _config["Valores:UrlApi"] + "Solicitud/ConsultarSolicitudesAdminAPI";
+
             var response = client.GetAsync(url).Result;
 
             if (response.StatusCode == HttpStatusCode.OK)

@@ -93,12 +93,6 @@ namespace JN_WEB.Controllers
             return Json(response.Content.ReadAsStringAsync().Result);
         }
 
-        [HttpGet]
-        public IActionResult VerEstadoSolicitud()
-        {
-            return View();
-        }
-
         private static void GuardarPDF(IFormFile ArchivoPDF, int Consecutivo, string carpeta)
         {
             Directory.CreateDirectory(carpeta);
