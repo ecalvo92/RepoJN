@@ -32,7 +32,7 @@ GO
 
 CREATE TABLE [dbo].[tbMensaje](
 	[Consecutivo] [int] IDENTITY(1,1) NOT NULL,
-	[Mensaje] [varchar](max) NOT NULL,
+	[Mensaje] [nvarchar](max) NOT NULL,
 	[FechaHora] [datetime] NOT NULL,
 	[ConsecutivoUsuario] [int] NOT NULL,
 	[ConsecutivoSolicitud] [int] NOT NULL,
@@ -97,21 +97,6 @@ GO
 SET IDENTITY_INSERT [dbo].[tbEstado] OFF
 GO
 
-SET IDENTITY_INSERT [dbo].[tbMensaje] ON 
-GO
-INSERT [dbo].[tbMensaje] ([Consecutivo], [Mensaje], [FechaHora], [ConsecutivoUsuario], [ConsecutivoSolicitud]) VALUES (1, N'Hola', CAST(N'2026-08-06T19:10:06.600' AS DateTime), 9, 11)
-GO
-INSERT [dbo].[tbMensaje] ([Consecutivo], [Mensaje], [FechaHora], [ConsecutivoUsuario], [ConsecutivoSolicitud]) VALUES (2, N'y mi ticket que???', CAST(N'2026-08-06T19:14:44.260' AS DateTime), 8, 11)
-GO
-INSERT [dbo].[tbMensaje] ([Consecutivo], [Mensaje], [FechaHora], [ConsecutivoUsuario], [ConsecutivoSolicitud]) VALUES (3, N'sda', CAST(N'2026-08-06T19:29:17.050' AS DateTime), 8, 11)
-GO
-INSERT [dbo].[tbMensaje] ([Consecutivo], [Mensaje], [FechaHora], [ConsecutivoUsuario], [ConsecutivoSolicitud]) VALUES (4, N'respondame', CAST(N'2026-08-06T19:30:41.990' AS DateTime), 8, 11)
-GO
-INSERT [dbo].[tbMensaje] ([Consecutivo], [Mensaje], [FechaHora], [ConsecutivoUsuario], [ConsecutivoSolicitud]) VALUES (5, N':(', CAST(N'2026-08-06T19:30:44.210' AS DateTime), 8, 11)
-GO
-SET IDENTITY_INSERT [dbo].[tbMensaje] OFF
-GO
-
 SET IDENTITY_INSERT [dbo].[tbRol] ON 
 GO
 INSERT [dbo].[tbRol] ([Consecutivo], [Nombre]) VALUES (1, N'Usuario')
@@ -123,7 +108,13 @@ GO
 
 SET IDENTITY_INSERT [dbo].[tbSolicitud] ON 
 GO
-INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado], [Solucion]) VALUES (11, N'Problema detectado con SQL Server', N'Se detecta lentitud en el servidor SQL que afecta la ejecución de consultas y procesos críticos. Se presentan tiempos de respuesta elevados, impactando el rendimiento de la aplicación y la experiencia de los usuarios finales.', CAST(N'2026-07-30T20:20:27.157' AS DateTime), NULL, 8, 9, 1, NULL)
+INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado], [Solucion]) VALUES (12, N'Error al iniciar sesión después de actualizar las credenciales del usuario', N'El usuario reporta que después de actualizar su contraseña no puede ingresar al sistema. Al intentar autenticarse, se muestra un mensaje de credenciales inválidas aunque la información ingresada sea correcta.', CAST(N'2026-08-13T19:28:18.640' AS DateTime), CAST(N'2026-08-13T19:31:47.080' AS DateTime), 8, 9, 2, N'Solventado, era un error de permisos a nivel de AD')
+GO
+INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado], [Solucion]) VALUES (13, N'Lentitud general del sistema durante la consulta de información de usuarios', N'Se presenta una demora considerable al realizar búsquedas de usuarios. La pantalla permanece cargando durante varios segundos antes de mostrar los resultados, afectando el tiempo de respuesta esperado por los usuarios.', CAST(N'2026-08-13T19:29:15.720' AS DateTime), NULL, 8, 7, 1, NULL)
+GO
+INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado], [Solucion]) VALUES (14, N'Error al guardar la información ingresada en el formulario de registro', N'Al completar todos los campos obligatorios y seleccionar la opción de guardar, el sistema muestra un mensaje de error y no registra la información. El problema ocurre de manera intermitente con diferentes usuarios.', CAST(N'2026-08-13T19:29:34.767' AS DateTime), CAST(N'2026-08-13T19:29:55.643' AS DateTime), 8, 9, 3, N'Solicitud cancelada por el usuario')
+GO
+INSERT [dbo].[tbSolicitud] ([Consecutivo], [Titulo], [Descripcion], [FechaRegistro], [FechaFinalizacion], [ConsecutivoUsuario], [ConsecutivoAdmin], [ConsecutivoEstado], [Solucion]) VALUES (15, N'Fallo durante la generación y descarga de reportes en formato Excel', N'Los usuarios pueden consultar la información, pero al intentar generar el archivo Excel el sistema presenta un error. El reporte no se descarga y la pantalla permanece cargando durante varios segundos.', CAST(N'2026-08-13T19:36:02.197' AS DateTime), CAST(N'2026-08-13T20:59:01.967' AS DateTime), 8, 9, 2, N'Se atendió este desmadre')
 GO
 SET IDENTITY_INSERT [dbo].[tbSolicitud] OFF
 GO
@@ -135,8 +126,6 @@ GO
 INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [UsaContrasennaTemp], [ConsecutivoRol]) VALUES (8, N'206690870', N'Manuel Mora Monge', N'mmora90870@ufide.ac.cr', N'$2a$11$faCoDb2o.a3SmTdro0ePPOdiTyN2IykN6IgEOhtKXue8B8.cdUe0W', 1, 0, 1)
 GO
 INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [UsaContrasennaTemp], [ConsecutivoRol]) VALUES (9, N'119390692', N'Kenneth Gomez Torres', N'kgomez90692@ufide.ac.cr', N'$2a$11$/ADg55r5cosb7I51elVUReRQ5WX8lXaz459bZA65j8yT4w.Yrbyri', 1, 0, 2)
-GO
-INSERT [dbo].[tbUsuario] ([Consecutivo], [Identificacion], [Nombre], [CorreoElectronico], [Contrasenna], [Estado], [UsaContrasennaTemp], [ConsecutivoRol]) VALUES (10, N'402660841', N'Adrián Villalobos Latiff', N'avillalobos60841@ufide.ac.cr', N'$2a$11$.tWBEyR/7wTjsrPhQfZte.VgFoUFK0p54XoyIS5n9P/v2kBB4jBH6', 1, 0, 2)
 GO
 SET IDENTITY_INSERT [dbo].[tbUsuario] OFF
 GO
@@ -217,6 +206,24 @@ BEGIN
             Nombre = @Nombre,
             CorreoElectronico = @CorreoElectronico
      WHERE  Consecutivo = @Consecutivo
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[spAtenderSolicitud]
+    @ConsecutivoSolicitud  int,
+    @ConsecutivoAdmin      int,
+    @Solucion              varchar(max)
+AS
+BEGIN
+
+    UPDATE  dbo.tbSolicitud
+       SET  ConsecutivoEstado   = 2,
+            FechaFinalizacion   = GETDATE(),
+            Solucion            = @Solucion
+     WHERE  Consecutivo         = @ConsecutivoSolicitud
+        AND ConsecutivoAdmin    = @ConsecutivoAdmin
+        AND ConsecutivoEstado   = 1
 
 END
 GO
@@ -377,6 +384,22 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[spObtenerInterlocutorSolicitud]
+    @ConsecutivoSolicitud  int,
+    @ConsecutivoUsuario    int
+AS
+BEGIN
+
+    SELECT  CASE WHEN ConsecutivoUsuario = @ConsecutivoUsuario
+                 THEN ConsecutivoAdmin
+                 ELSE ConsecutivoUsuario
+            END
+    FROM    dbo.tbSolicitud
+    WHERE   Consecutivo = @ConsecutivoSolicitud
+
+END
+GO
+
 CREATE PROCEDURE [dbo].[spRegistrarError]
     @Mensaje            varchar(max),
     @Lugar              varchar(50),
@@ -394,7 +417,7 @@ GO
 CREATE PROCEDURE [dbo].[spRegistrarMensaje]
     @ConsecutivoUsuario    int,
     @ConsecutivoSolicitud  int,
-    @Mensaje               varchar(max)
+    @Mensaje               nvarchar(max)
 AS
 BEGIN
 
